@@ -2,6 +2,8 @@
 import { fileToBase64 } from '@/utilities/files';
 
   const url = ref('');
+  const fullResponse = ref();
+  const error = ref();
   const isLoading = ref(false);
   const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
@@ -27,12 +29,14 @@ import { fileToBase64 } from '@/utilities/files';
         }
       });
       if ('data' in res && res.data) {
+        fullResponse.value = res;
         url.value = res.data.url;
       } else {
         console.error('`data` property is missing from the response');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Upload failed:", error);
+      error.value = error;
     }
     isLoading.value = false;
   }
@@ -40,15 +44,14 @@ import { fileToBase64 } from '@/utilities/files';
 
 <template>
   <div>
-    <form
-      @submit.prevent="handleSubmit"
-    >
+    <form @submit.prevent="handleSubmit">
       <label>Upload an image</label>
       <input ref="fileInput" type="file" accept="image/png, image/jpeg" name="image" />
       <button type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
-    <pre>{{ url }}</pre>
     <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
+    <pre v-if="fullResponse">{{ fullResponse }}</pre>
+    <pre v-if="error">Error: {{ error }}</pre>
   </div>
 </template>
