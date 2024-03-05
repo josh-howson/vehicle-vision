@@ -1,4 +1,5 @@
 import { getOpenAIResponseWithImage, parseOpenAIResponseContent } from '@/utilities/openai';
+import { validateImage } from '@/utilities/files';
 
 type OpenAIPostBody = {
   imageUrl: string;
@@ -23,12 +24,13 @@ export default defineEventHandler(async event => {
   const { imageUrl } = body;
   if (!imageUrl) return new Response("`imageUrl` was not provided", { status: 400 })
 
+  const imageValidation = validateImage(imageUrl)
+  if (!imageValidation.isValid) return new Response(imageValidation.message, { status: 400 });
+
   try {
     const response = await getOpenAIResponseWithImage(PROMPT, imageUrl);
-    console.log(response);
     return parseOpenAIResponseContent(response.data.choices[0].message.content);
   } catch(error: any) {
-    console.error(error);
     return new Response(error, { status: 500 });
   }
 });
