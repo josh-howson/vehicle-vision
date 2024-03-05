@@ -1,6 +1,7 @@
-import { getOpenAIResponseWithImage, parseOpenAIResponseContent } from '@/utilities/openai';
+import { getOpenAIResponseWithImage, getUrlFromOpenAIContent, parseOpenAIContent } from '@/utilities/openai';
 import { validateImage } from '@/utilities/files';
 
+// POST expects the following body
 type OpenAIPostBody = {
   imageUrl: string;
 };
@@ -29,7 +30,14 @@ export default defineEventHandler(async event => {
 
   try {
     const response = await getOpenAIResponseWithImage(PROMPT, imageUrl);
-    return parseOpenAIResponseContent(response.data.choices[0].message.content);
+    const content = parseOpenAIContent(response.data.choices[0].message.content);
+    return {
+      status: response.status,
+      statusText: response.statusText,
+      data: {
+        url: getUrlFromOpenAIContent(content)
+      },
+    };
   } catch(error: any) {
     return new Response(error, { status: 500 });
   }

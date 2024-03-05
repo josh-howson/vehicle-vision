@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { fileToBase64 } from '@/utilities/files';
 
-  const res = ref();
+  const url = ref('');
   const isLoading = ref(false);
   const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
@@ -17,15 +17,20 @@ import { fileToBase64 } from '@/utilities/files';
     const file = files[0];
     try {
       const base64File = await fileToBase64(file) as string;
-      res.value = await $fetch('/api/openai', {
-      method: 'POST',
-      body: {
-        imageUrl: base64File,
-      },
-      headers: {
-        'Content-Type': 'application/json',
+      const res = await $fetch('/api/openai', {
+        method: 'POST',
+        body: {
+          imageUrl: base64File,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      if ('data' in res && res.data) {
+        url.value = res.data.url;
+      } else {
+        console.error('`data` property is missing from the response');
       }
-    });
     } catch (error) {
       console.error("Upload failed:", error);
     }
@@ -43,6 +48,7 @@ import { fileToBase64 } from '@/utilities/files';
       <button type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
-    <pre>{{ res }}</pre>
+    <pre>{{ url }}</pre>
+    <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
   </div>
 </template>

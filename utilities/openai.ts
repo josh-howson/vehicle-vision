@@ -4,7 +4,7 @@ import type { OpenAIVisionRequestBody, OpenAIVisionResponseContent } from '@/typ
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-export const parseOpenAIResponseContent = (str: string): OpenAIVisionResponseContent => {
+export const parseOpenAIContent = (str: string): OpenAIVisionResponseContent => {
   str = str.replace(/^```json\s*|```$/g, '');
   const obj = JSON.parse(str);
 
@@ -41,4 +41,18 @@ export const getOpenAIResponseWithImage = async (prompt: string, imageUrl: strin
   };
 
   return await axios.post(OPENAI_URL, payload, { headers })
+}
+
+export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) => {
+  const base = "https://www.rvtrader.com/rvs-for-sale";
+
+  const params = new URLSearchParams({
+    year: content.data.year,
+    type: content.data.type,
+    make: content.data.make,
+    model: content.data.model,
+    trim: content.data.trim,
+  })
+
+  return `${base}?${params.toString()}`;
 }
