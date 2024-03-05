@@ -3,6 +3,7 @@
 
   const url = ref('');
   const fullResponse = ref();
+  const fullError = ref();
   const isLoading = ref(false);
   const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
@@ -35,7 +36,7 @@
       }
     } catch (error: any) {
       console.error("Upload failed:", error);
-      error.value = error;
+      fullError.value = error;
     }
     isLoading.value = false;
   }
@@ -48,6 +49,10 @@
       <button :disabled="isLoading" type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
-    <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
+    <div>
+      <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
+    </div>
+    <sup>{{ fullResponse }}</sup>
+    <sup>{{ fullError }}</sup>
   </div>
 </template>

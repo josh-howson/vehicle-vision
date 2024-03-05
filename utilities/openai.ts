@@ -2,7 +2,6 @@ import axios from 'axios';
 import type { OpenAIVisionRequestBody, OpenAIVisionResponseContent } from '@/types/openai';
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 export const parseOpenAIContent = (str: string): OpenAIVisionResponseContent => {
   str = str.replace(/^```json\s*|```$/g, '');
@@ -13,9 +12,9 @@ export const parseOpenAIContent = (str: string): OpenAIVisionResponseContent => 
 
 export const getOpenAIResponseWithImage = async (prompt: string, imageUrl: string) => {
   const headers = {
-    'Authorization': `Bearer ${OPENAI_API_KEY}`,
+    // 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+    'Authorization': `Bearer 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`,
     'Content-Type': 'application/json',
-    'Cache-Control': 'no-cache',
   };
 
   const payload: OpenAIVisionRequestBody = {
