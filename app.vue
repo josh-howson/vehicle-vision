@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { fileToBase64 } from '@/utilities/files';
+  import { blobToDataURI, fileToBase64, resizeImage } from '@/utilities/files';
 
   const url = ref('');
   const fullResponse = ref();
@@ -18,11 +18,14 @@
 
     const file = files[0];
     try {
-      const base64File = await fileToBase64(file) as string;
+      const resizedImageBlob = await resizeImage(file, 300, 200);
+      const dataUri = await blobToDataURI(resizedImageBlob);
+      console.log('dataUri', dataUri)
+      // const base64File = await fileToBase64(file) as string;
       const res = await $fetch('/api/openai', {
         method: 'POST',
         body: {
-          imageUrl: base64File,
+          imageUrl: dataUri,
         },
         headers: {
           'Content-Type': 'application/json',
