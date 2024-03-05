@@ -2,7 +2,7 @@ import pica from 'pica';
 
 const VALID_MIME_TYPES = ['image/png', 'image/jpeg'];
 // TODO: scale down, compress before sending to gpt
-const MAX_IMAGE_SIZE = 300000;
+const MAX_IMAGE_SIZE = 99999999999;
 const RESIZE_QUALITY = .92;
 
 export const fileToBase64 = (file: File) => {
