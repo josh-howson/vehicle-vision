@@ -82,3 +82,53 @@ export const resizeImageWithPica = async (file: File, width: number, height: num
     reader.readAsDataURL(file);
   });
 }
+
+
+
+
+
+export const resizeImage = (file: File, maxDimension: number): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const aspectRatio = img.width / img.height;
+      let newWidth: number, newHeight: number;
+
+      if (img.width > img.height) {
+        newWidth = maxDimension;
+        newHeight = newWidth / aspectRatio;
+      } else {
+        newHeight = maxDimension;
+        newWidth = newHeight * aspectRatio;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Could not get canvas context'));
+        return;
+      }
+
+      ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+      canvas.toBlob(blob => {
+        if (blob) {
+          const modifiedFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
+          resolve(modifiedFile);
+        } else {
+          reject(new Error('Blob creation failed'));
+        }
+      }, 'image/jpeg', RESIZE_QUALITY);
+    };
+
+    img.onerror = () => reject(new Error('Image loading failed'));
+
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('File reading failed'));
+    reader.onload = e => img.src = e.target?.result as string;
+    reader.readAsDataURL(file);
+  });
+};
