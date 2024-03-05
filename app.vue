@@ -47,7 +47,7 @@ import { fileToBase64 } from '@/utilities/files';
     <form @submit.prevent="handleSubmit">
       <label>Upload an image</label>
       <input ref="fileInput" type="file" accept="image/png, image/jpeg" name="image" />
-      <button type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
+      <button :disabled="isLoading" type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
     <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
