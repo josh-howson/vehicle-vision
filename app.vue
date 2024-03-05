@@ -39,6 +39,6 @@ import { fileToBase64 } from '@/utilities/files';
       <button type="submit">Describe image</button>
     </form>
 
-    <div>{{ res }}</div>
+    <pre>{{ res }}</pre>
   </div>
 </template>
