@@ -25,10 +25,7 @@ export type OpenAIVisionResponseContent = {
   status: 'error' | 'ok';
   statusText: string;
   data: {
-    year: string;
-    type: string;
     make: string;
     model: string;
-    trim: string;
   }
 }

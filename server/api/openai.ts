@@ -12,11 +12,8 @@ type VehicleVisionResponse = {
   status: string;
   statusText: string;
   data: {
-    year: string;
-    type: string;
     make: string;
     model: string;
-    trim: string;
     url: string;
   }
 }
