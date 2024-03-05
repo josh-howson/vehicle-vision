@@ -1,4 +1,4 @@
-import { getOpenAIResponseWithImage, getUrlFromOpenAIContent, parseOpenAIContent } from '@/utilities/openai';
+import { buildPrompt, getOpenAIResponseWithImage, getUrlFromOpenAIContent, parseOpenAIContent } from '@/utilities/openai';
 import { validateImage } from '@/utilities/files';
 
 // POST expects the following body
@@ -6,16 +6,7 @@ type OpenAIPostBody = {
   imageUrl: string;
 };
 
-// key is readable term for openai, value corresponding url param
-const params = {
-  year: 'year',
-  type: 'type',
-  make: 'make',
-  model: 'model',
-  trim: 'trim',
-};
-
-const PROMPT = `the attached image should be an RV or trailer home. as a JSON response only, approximate its ${Object.keys(params).map(param => param).join(', ')}. make guesses, no unspecified values. If you do not find an RV/trailer in the image, return status of error with a readable error message. additionally include a "confidence" score from 0 to 10 and approximate how accurate the guess is. so JSON response must be: {status: 'ok' | 'error', statusText, data: {...the aforementioned fields, confidence}}`;
+const PROMPT = buildPrompt();
 
 type VehicleVisionResponse = {
   status: string;

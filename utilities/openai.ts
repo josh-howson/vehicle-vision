@@ -56,3 +56,29 @@ export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) =>
 
   return `${base}?${params.toString()}`;
 }
+
+export const buildPrompt = () => {
+  const params = {
+    year: 'year',
+    type: 'type',
+    make: 'make',
+    model: 'model',
+    trim: 'trim',
+  };
+  const vehicleType = "an RV or Trailer home";
+  const expectedImage = `The attached image should be ${vehicleType}.`;
+  const responseFormat = `As a JSON Response only, approximate the following attributes: ${Object.keys(params).map(param => param).join(', ')}.`;
+  const noUnspecified = `Make guesses, no unspecified values.`;
+  const errorCase = "If you do not find an RV/trailer in the image, return status of error with a readable error message as `statusText`.";
+  // const confidenceScore = "Include a confidence score from 0 to 10 and approximate how accurate the guess is, as `confidence`.";
+  const TSType = "{ status: 'ok' | 'error'; statusText: string; data: { ...the aforementioned attributes; confidence: number; } }";
+  const respondWithType = `The response should be of shape: ${TSType}`;
+
+  return [
+    expectedImage,
+    responseFormat,
+    noUnspecified,
+    errorCase,
+    respondWithType,
+  ].join(' ');
+}
