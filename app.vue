@@ -2,6 +2,7 @@
 import { fileToBase64 } from '@/utilities/files';
 
   const res = ref();
+  const isLoading = ref(false);
   const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
   const handleSubmit = async (e: Event) => {
@@ -10,6 +11,8 @@ import { fileToBase64 } from '@/utilities/files';
       console.error('No file selected.')
       return;
     }
+
+    isLoading.value = true;
 
     const file = files[0];
     try {
@@ -26,6 +29,7 @@ import { fileToBase64 } from '@/utilities/files';
     } catch (error) {
       console.error("Upload failed:", error);
     }
+    isLoading.value = false;
   }
 </script>
 
@@ -36,7 +40,7 @@ import { fileToBase64 } from '@/utilities/files';
     >
       <label>Upload an image</label>
       <input ref="fileInput" type="file" accept="image/png, image/jpeg" name="image" />
-      <button type="submit">Describe image</button>
+      <button type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
     <pre>{{ res }}</pre>
