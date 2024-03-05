@@ -1,6 +1,7 @@
 const VALID_MIME_TYPES = ['image/png', 'image/jpeg'];
 // TODO: scale down, compress before sending to gpt
 const MAX_IMAGE_SIZE = 300000;
+const RESIZE_QUALITY = .92;
 
 export const fileToBase64 = (file: File) => {
   return new Promise((resolve, reject) => {
@@ -11,12 +12,12 @@ export const fileToBase64 = (file: File) => {
   });
 }
 
-function isValidDataUri(dataUri: string) {
+const isValidDataUri = (dataUri: string) => {
   const regex = /^data:(image\/(png|jpeg));base64,([\s\S]*)$/;
   return regex.test(dataUri);
 }
 
-function isValidMimeType(dataUri: string | undefined): boolean {
+const isValidMimeType = (dataUri: string | undefined): boolean => {
   if (typeof dataUri !== 'string') {
     return false;
   }
@@ -30,15 +31,15 @@ function isValidMimeType(dataUri: string | undefined): boolean {
   return VALID_MIME_TYPES.includes(mimeType);
 }
 
-function isValidSize(dataUri: string) {
+const isValidSize = (dataUri: string) => {
   const base64Data = dataUri.split(',')[1];
   // Base64 encoding represents every 3 bytes of binary data as 4 characters of ASCII text
-  const dataSize = base64Data.length * (3/4) - (base64Data.match(/=+$/)?.[0].length || 0);
+  const dataSize = base64Data.length * (3 / 4) - (base64Data.match(/=+$/)?.[0].length || 0);
   const maxSizeInBytes = MAX_IMAGE_SIZE;
   return dataSize <= maxSizeInBytes;
 }
 
-export function validateImage(dataUri: string) {
+export const validateImage = (dataUri: string) => {
   if (!isValidDataUri(dataUri)) {
     return { isValid: false, message: 'Invalid data URI format.' };
   }
@@ -53,3 +54,50 @@ export function validateImage(dataUri: string) {
 
   return { isValid: true, message: 'Image is valid.' };
 }
+
+// paints the image onto a canvas to resize so the longest edge is maxDimension px long
+export const resizeImage = (file: File, maxDimension: number): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const aspectRatio = img.width / img.height;
+      let newWidth: number, newHeight: number;
+
+      if (img.width > img.height) {
+        newWidth = maxDimension;
+        newHeight = newWidth / aspectRatio;
+      } else {
+        newHeight = maxDimension;
+        newWidth = newHeight * aspectRatio;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Could not get canvas context'));
+        return;
+      }
+
+      ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+      canvas.toBlob(blob => {
+        if (blob) {
+          const modifiedFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
+          resolve(modifiedFile);
+        } else {
+          reject(new Error('Blob creation failed'));
+        }
+      }, 'image/jpeg', RESIZE_QUALITY);
+    };
+
+    img.onerror = () => reject(new Error('Image loading failed'));
+
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('File reading failed'));
+    reader.onload = e => img.src = e.target?.result as string;
+    reader.readAsDataURL(file);
+  });
+};

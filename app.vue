@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fileToBase64 } from '@/utilities/files';
+import { fileToBase64, resizeImage } from '@/utilities/files';
 
   const url = ref('');
   const fullResponse = ref();
@@ -18,7 +18,8 @@ import { fileToBase64 } from '@/utilities/files';
 
     const file = files[0];
     try {
-      const base64File = await fileToBase64(file) as string;
+      const resizedFile = await resizeImage(file, 480);
+      const base64File = await fileToBase64(resizedFile) as string;
       const res = await $fetch('/api/openai', {
         method: 'POST',
         body: {
