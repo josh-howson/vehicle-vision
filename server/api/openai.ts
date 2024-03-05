@@ -32,12 +32,13 @@ export default defineEventHandler(async event => {
   try {
     const response = await getOpenAIResponseWithImage(PROMPT, imageUrl);
     const content = parseOpenAIContent(response.data.choices[0].message.content);
+    const url = getUrlFromOpenAIContent(content);
     return {
       status: content.status,
       statusText: content.statusText,
       data: {
         ...content.data,
-        url: getUrlFromOpenAIContent(content),
+        url: url,
       },
     } as VehicleVisionResponse;
   } catch(error: any) {

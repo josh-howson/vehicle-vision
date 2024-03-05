@@ -44,12 +44,15 @@ export const getOpenAIResponseWithImage = async (prompt: string, imageUrl: strin
 }
 
 export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) => {
+  if (content.status !== 'ok') return undefined;
   const base = "https://www.rvtrader.com/rvs-for-sale";
+  const params = new URLSearchParams();
 
-  const params = new URLSearchParams({
-    make: content.data.make,
-    model: content.data.model,
-  })
+  Object.entries(content.data).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      params.append(key, value);
+    }
+  });
 
   return `${base}?${params.toString()}`;
 }
