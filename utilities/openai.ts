@@ -67,8 +67,7 @@ export const buildPrompt = () => {
   const responseFormat = `As a JSON Response only, approximate the following attributes: ${Object.keys(params).map(param => param).join(', ')}.`;
   const noUnspecified = `Make guesses, no unspecified values. Always make a real guess, never "N/A" or other uncertain values.`;
   const errorCase = "If you do not find a matching vehicle, or if you're unable to detect which kind of vehicle it, is return status of error with a readable error message as `statusText`.";
-  // const confidenceScore = "Include a confidence score from 0 to 10 and approximate how accurate the guess is, as `confidence`.";
-  const TSType = "{ status: 'ok' | 'error'; statusText: string; data: { ...the aforementioned attributes; confidence: number; } }";
+  const TSType = "{ status: 'ok' | 'error'; statusText: string; data: { ...the aforementioned attributes } }";
   const respondWithType = `The response should be of shape: ${TSType}`;
 
   return [
