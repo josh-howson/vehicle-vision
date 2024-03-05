@@ -13,7 +13,7 @@ const params = {
   trim: 'trim',
 };
 
-const PROMPT = `the attached image should be an RV or trailer home. as a JSON response only, approximate its ${Object.keys(params).map(param => param).join(', ')}. make guesses, no unspecified values. If you do not find an RV/trailer in the image, return status of error with a readable error message. additionally include a "confidence" score from 0 to 10 and approximate how accurate the guess is. so JSON response must be: {status: 'ok' | 'error', statusText, data: {...the aforementioned fields}, confidence}`;
+const PROMPT = `the attached image should be an RV or trailer home. as a JSON response only, approximate its ${Object.keys(params).map(param => param).join(', ')}. make guesses, no unspecified values. If you do not find an RV/trailer in the image, return status of error with a readable error message. additionally include a "confidence" score from 0 to 10 and approximate how accurate the guess is. so JSON response must be: {status: 'ok' | 'error', statusText, data: {...the aforementioned fields, confidence}}`;
 
 export default defineEventHandler(async event => {
   if (event.node.req.method !== 'POST') {
