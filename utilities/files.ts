@@ -1,3 +1,5 @@
+import pica from 'pica';
+
 const VALID_MIME_TYPES = ['image/png', 'image/jpeg'];
 // TODO: scale down, compress before sending to gpt
 const MAX_IMAGE_SIZE = 300000;
@@ -55,49 +57,28 @@ export const validateImage = (dataUri: string) => {
   return { isValid: true, message: 'Image is valid.' };
 }
 
-// paints the image onto a canvas to resize so the longest edge is maxDimension px long
-export const resizeImage = (file: File, maxDimension: number): Promise<File> => {
+export const resizeImageWithPica = async (file: File, width: number, height: number): Promise<File> => {
+  const picaResizer = pica();
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const aspectRatio = img.width / img.height;
-      let newWidth: number, newHeight: number;
-
-      if (img.width > img.height) {
-        newWidth = maxDimension;
-        newHeight = newWidth / aspectRatio;
-      } else {
-        newHeight = maxDimension;
-        newWidth = newHeight * aspectRatio;
-      }
-
-      const canvas = document.createElement('canvas');
-      canvas.width = newWidth;
-      canvas.height = newHeight;
-
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        reject(new Error('Could not get canvas context'));
-        return;
-      }
-
-      ctx.drawImage(img, 0, 0, newWidth, newHeight);
-
-      canvas.toBlob(blob => {
-        if (blob) {
-          const modifiedFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
-          resolve(modifiedFile);
-        } else {
-          reject(new Error('Blob creation failed'));
-        }
-      }, 'image/jpeg', RESIZE_QUALITY);
-    };
-
-    img.onerror = () => reject(new Error('Image loading failed'));
-
     const reader = new FileReader();
-    reader.onerror = () => reject(new Error('File reading failed'));
-    reader.onload = e => img.src = e.target?.result as string;
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        // Use pica to resize image
+        await picaResizer.resize(img, canvas)
+          .then((result: HTMLCanvasElement) => picaResizer.toBlob(result, 'image/jpeg'))
+          .then(blob => resolve(new File([blob], file.name, {
+            type: 'image/jpeg',
+            lastModified: Date.now(),
+          })))
+          .catch(reject);
+      };
+      img.src = reader.result?.toString() || '';
+    };
     reader.readAsDataURL(file);
   });
-};
+}

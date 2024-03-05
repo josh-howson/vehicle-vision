@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fileToBase64, resizeImage } from '@/utilities/files';
+  import { fileToBase64, resizeImageWithPica } from '@/utilities/files';
 
   const url = ref('');
   const fullResponse = ref();
@@ -18,7 +18,7 @@ import { fileToBase64, resizeImage } from '@/utilities/files';
 
     const file = files[0];
     try {
-      const resizedFile = await resizeImage(file, 480);
+      const resizedFile = await resizeImageWithPica(file, 480, 480);
       const base64File = await fileToBase64(resizedFile) as string;
       const res = await $fetch('/api/openai', {
         method: 'POST',
@@ -46,13 +46,10 @@ import { fileToBase64, resizeImage } from '@/utilities/files';
 <template>
   <div>
     <form @submit.prevent="handleSubmit">
-      <label>Upload an image</label>
       <input ref="fileInput" type="file" accept="image/png, image/jpeg" name="image" />
       <button :disabled="isLoading" type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
     <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
-    <pre v-if="fullResponse">{{ fullResponse }}</pre>
-    <pre v-if="error">Error: {{ error }}</pre>
   </div>
 </template>
