@@ -3,7 +3,6 @@
 
   const url = ref('');
   const fullResponse = ref();
-  const error = ref();
   const isLoading = ref(false);
   const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
@@ -18,9 +17,9 @@
 
     const file = files[0];
     try {
-      // const resizedFile = await resizeImageWithPica(file, 480, 480);
-      const resizedFile = await resizeImage(file, 480);
-      const base64File = await fileToBase64(resizedFile) as string;
+      // const resizedFile = await resizeImage(file, 480);
+      // const base64File = await fileToBase64(resizedFile) as string;
+      const base64File = await fileToBase64(file) as string;
       const res = await $fetch('/api/openai', {
         method: 'POST',
         body: {
