@@ -1,10 +1,19 @@
-import { getOpenAIResponseWithImage, parseOpenAIResponseToObject } from '@/utilities/openai';
+import { getOpenAIResponseWithImage, parseOpenAIResponseContent } from '@/utilities/openai';
 
 type OpenAIPostBody = {
   imageUrl: string;
 };
 
-const PROMPT = "the attached image should be an RV or trailer home. as a JSON response only, approximate its year, make, model, class, floorplan, category, length, fuel type, sleeping capacity, gross vehicle weight. make guesses, no unspecified values. If you do not find an RV/trailer in the image, return status of error with a readable error message. so JSON response must be: {status, statusText, data: {...the aforementioned fields}}";
+// key is readable term for openai, value corresponding url param
+const params = {
+  year: 'year',
+  type: 'type',
+  make: 'make',
+  model: 'model',
+  trim: 'trim',
+};
+
+const PROMPT = `the attached image should be an RV or trailer home. as a JSON response only, approximate its ${Object.keys(params).map(param => param).join(', ')}. make guesses, no unspecified values. If you do not find an RV/trailer in the image, return status of error with a readable error message. so JSON response must be: {status: 'ok' | 'error', statusText, data: {...the aforementioned fields}}`;
 
 export default defineEventHandler(async event => {
   if (event.node.req.method !== 'POST') {
@@ -16,7 +25,8 @@ export default defineEventHandler(async event => {
 
   try {
     const response = await getOpenAIResponseWithImage(PROMPT, imageUrl);
-    return parseOpenAIResponseToObject(response.data.choices[0].message.content) as string;
+    console.log(response);
+    return parseOpenAIResponseContent(response.data.choices[0].message.content);
   } catch(error: any) {
     console.error(error);
     return new Response(error, { status: 500 });

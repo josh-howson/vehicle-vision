@@ -1,10 +1,10 @@
 import axios from 'axios';
-import type { OpenAIVisionRequestBody } from '@/types/openai';
+import type { OpenAIVisionRequestBody, OpenAIVisionResponseContent } from '@/types/openai';
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-export const parseOpenAIResponseToObject = (str: string) => {
+export const parseOpenAIResponseContent = (str: string): OpenAIVisionResponseContent => {
   str = str.replace(/^```json\s*|```$/g, '');
   const obj = JSON.parse(str);
 
