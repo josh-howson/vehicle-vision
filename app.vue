@@ -45,7 +45,7 @@
 <template>
   <div>
     <form @submit.prevent="handleSubmit">
-      <input ref="fileInput" type="file" accept="image/png, image/jpeg" name="image" />
+      <input ref="fileInput" type="file" accept="image/*" name="image" />
       <button :disabled="isLoading" type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
