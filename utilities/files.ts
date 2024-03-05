@@ -2,7 +2,7 @@ import pica from 'pica';
 
 const VALID_MIME_TYPES = ['image/png', 'image/jpeg'];
 // TODO: scale down, compress before sending to gpt
-const MAX_IMAGE_SIZE = 99999999999;
+const MAX_IMAGE_SIZE = -1;
 const RESIZE_QUALITY = .92;
 
 export const fileToBase64 = (file: File) => {
@@ -34,6 +34,7 @@ const isValidMimeType = (dataUri: string | undefined): boolean => {
 }
 
 const isValidSize = (dataUri: string) => {
+  if (MAX_IMAGE_SIZE === -1) return true;
   const base64Data = dataUri.split(',')[1];
   // Base64 encoding represents every 3 bytes of binary data as 4 characters of ASCII text
   const dataSize = base64Data.length * (3 / 4) - (base64Data.match(/=+$/)?.[0].length || 0);
