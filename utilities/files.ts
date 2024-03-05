@@ -1,5 +1,6 @@
 const VALID_MIME_TYPES = ['image/png', 'image/jpeg'];
-const MAX_IMAGE_SIZE = 150000;
+// TODO: scale down, compress before sending to gpt
+const MAX_IMAGE_SIZE = 300000;
 
 export const fileToBase64 = (file: File) => {
   return new Promise((resolve, reject) => {
