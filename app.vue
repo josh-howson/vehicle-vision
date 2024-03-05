@@ -1,9 +1,14 @@
 <script setup lang="ts">
-  const { data } = await useFetch('/api/openai?name=Josh');
+  const res = ref();
+  const handleClick = async () => {
+    res.value = $fetch('/api/openai');
+  }
 </script>
 
 <template>
   <div>
-    Hello, {{ data?.hello }}
+    Hello, {{ res }}
+
+    <button @click="handleClick">Click</button>
   </div>
 </template>
