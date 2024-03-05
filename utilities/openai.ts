@@ -12,8 +12,7 @@ export const parseOpenAIContent = (str: string): OpenAIVisionResponseContent => 
 
 export const getOpenAIResponseWithImage = async (prompt: string, imageUrl: string) => {
   const headers = {
-    // 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-    'Authorization': `Bearer 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`,
+    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
     'Content-Type': 'application/json',
   };
 
