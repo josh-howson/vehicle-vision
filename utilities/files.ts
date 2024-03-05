@@ -1,5 +1,5 @@
 const VALID_MIME_TYPES = ['image/png', 'image/jpeg'];
-const MAX_IMAGE_SIZE = 50000;
+const MAX_IMAGE_SIZE = 150000;
 
 export const fileToBase64 = (file: File) => {
   return new Promise((resolve, reject) => {
