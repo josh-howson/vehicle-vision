@@ -32,6 +32,7 @@ export const getOpenAIResponseWithImage = async (prompt: string, imageUrl: strin
             type: 'image_url',
             image_url: {
               url: imageUrl,
+              detail: "low",
             }
           }
         ],

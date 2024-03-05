@@ -7,6 +7,7 @@ type OpenAIContentImageURL = {
   type: 'image_url';
   image_url: {
     url: string;
+    detail?: 'low' | 'high' | 'auto';
   }
 };
 
