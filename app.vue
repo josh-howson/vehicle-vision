@@ -59,3 +59,8 @@
     <sup>{{ fullError }}</sup>
   </div>
 </template>
+
+<style>
+  body {font-size: 20px;}
+  button, input[type="file"] {padding: 10px; font-size: inherit}
+</style>
