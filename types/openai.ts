@@ -29,5 +29,6 @@ export type OpenAIVisionResponseContent = {
     make: string;
     model: string;
     website: 'rvtrader' | 'cycletrader' | 'carsales';
+    url: string;
   }
 }

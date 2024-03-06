@@ -9,7 +9,7 @@ type OpenAIPostBody = {
 const PROMPT = buildPrompt();
 
 type VehicleVisionResponse = {
-  status: string;
+  status: 'ok' | 'error';
   statusText: string;
   data: {
     make: string;
