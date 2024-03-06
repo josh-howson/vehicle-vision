@@ -52,11 +52,11 @@
       <button :disabled="isLoading" type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
     </form>
 
+    <sup>{{ fullResponse }}</sup>
+    <sup>{{ fullError }}</sup>
     <div>
       <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
     </div>
-    <sup>{{ fullResponse }}</sup>
-    <sup>{{ fullError }}</sup>
   </div>
 </template>
 
