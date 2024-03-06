@@ -63,7 +63,7 @@ export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) =>
   }
 
   if (content.data.website === 'carsales') {
-    return [base, content.data.make, content.data.model].filter(i => !!i).join('/');
+    return [base, content.data.make, content.data.model, ""].filter(i => !!i).join('/');
   }
 }
 
