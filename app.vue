@@ -8,8 +8,8 @@
   const fileInput: Ref<HTMLInputElement | null> = ref(null);
   const previewSrc = ref();
 
-  const handleImageChange = (e: Event) => {
-    const input = e.target as HTMLInputElement;
+  const updateImagePreview = () => {
+    const input = fileInput.value as HTMLInputElement;
     const file = input.files?.[0]
     if (file) {
       const reader = new FileReader();
@@ -20,7 +20,7 @@
     }
   }
 
-  const handleSubmit = async (e: Event) => {
+  const sendImageToOpenAI = async () => {
     const files = fileInput.value?.files;
     if (!files || files.length === 0) {
       console.error('No file selected.')
@@ -48,32 +48,32 @@
       } else {
         console.error('`data` property is missing from the response');
       }
+      fullError.value = null;
     } catch (error: any) {
       console.error("Upload failed:", error);
       fullError.value = error;
     }
     isLoading.value = false;
   }
+
+  const handleFileChange = () => {
+    sendImageToOpenAI();
+    updateImagePreview();
+  }
 </script>
 
 <template>
   <div>
-    <form @submit.prevent="handleSubmit">
-      <input
-        ref="fileInput"
-        type="file"
-        accept="image/*"
-        name="image"
-        capture="environment"
-        @change="handleImageChange"
-      />
-      <button
-        :disabled="isLoading"
-        type="submit"
-      >
-        {{ isLoading ? 'Please wait...' : 'Describe image' }}
-      </button>
-    </form>
+    <input
+      ref="fileInput"
+      type="file"
+      accept="image/*"
+      name="image"
+      capture="environment"
+      @change="handleFileChange"
+    />
+
+    <div v-if="isLoading">Please wait...</div>
 
     <img v-if="previewSrc" :src="previewSrc" width="200" />
 
