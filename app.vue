@@ -3,7 +3,7 @@
   import type { OpenAIVisionResponseContent } from './types/openai';
 
   const url = ref('');
-  const fullResponse = ref();
+  const fullResponse: Ref<null | OpenAIVisionResponseContent> = ref(null);
   const fullError = ref();
   const isAnalyzingImage = ref(false);
   const willRedirect = ref(false);
@@ -75,7 +75,7 @@
 
   const sendToResults = (response: OpenAIVisionResponseContent) => {
     willRedirect.value = true;
-    const redirectInThisManySeconds = 3;
+    const redirectInThisManySeconds = 5;
     secondsUntilRedirect.value = redirectInThisManySeconds;
     intervalId = setInterval(() => {
       if (secondsUntilRedirect.value > 0) {
@@ -109,23 +109,17 @@
 
     <div v-if="isAnalyzingImage">Analyzing image...</div>
 
-    <template v-if="willRedirect">
-      <div>Showing you [make], [model] in {{ secondsUntilRedirect }}</div>
-      <button @click="cancelRedirect">Nonono I don't want that! Stop!</button>
-    </template>
+    <div>
+      <template v-if="willRedirect">
+        <div>Showing you {{ fullResponse?.data.make}} {{ fullResponse?.data.model }} for sale on {{ fullResponse?.data.website }} in {{ secondsUntilRedirect }}</div>
+        <button @click="cancelRedirect">Nonono stop that!</button>
+      </template>
+    </div>
 
     <img v-if="previewSrc" :src="previewSrc" width="200" />
 
-    <sup>{{ fullResponse }}</sup>
-    <sup>{{ fullError }}</sup>
-    <div>
-      <a
-        v-if="url"
-        :href="url"
-        target="_blank">
-        See vehicles like this
-      </a>
-    </div>
+    <!-- <sup>{{ fullResponse }}</sup> -->
+    <!-- <sup>{{ fullError }}</sup> -->
   </div>
 </template>
 
