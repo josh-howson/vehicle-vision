@@ -47,7 +47,7 @@ export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) =>
   const BASE_URL = {
     rvtrader: "https://www.rvtrader.com",
     cycletrader: "https://www.cycletrader.com",
-    carsales: "https://www.carsales.com.au,"
+    carsales: "https://www.carsales.com.au"
   };
   const base = BASE_URL[content.data.website];
   if (!base) return undefined;
