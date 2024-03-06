@@ -59,7 +59,7 @@ export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) =>
     if (content.data.website === 'cycletrader') srpLine = '/motorcycles-for-sale';
     if (content.data.make) params.append('make', content.data.make);
     if (content.data.model) params.append('model', content.data.model);
-    return `${base}/${srpLine}?${params.toString()}`;
+    return `${base}${srpLine}?${params.toString()}`;
   }
 
   if (content.data.website === 'carsales') {
