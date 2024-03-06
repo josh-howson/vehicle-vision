@@ -1,16 +1,6 @@
 const VALID_MIME_TYPES = ['image/png', 'image/jpeg'];
 // TODO: scale down, compress before sending to gpt
 const MAX_IMAGE_SIZE = -1;
-const RESIZE_QUALITY = .92;
-
-export const fileToBase64 = (file: File) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-}
 
 const isValidDataUri = (dataUri: string) => {
   const regex = /^data:(image\/(png|jpeg));base64,([\s\S]*)$/;

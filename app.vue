@@ -1,11 +1,24 @@
 <script setup lang="ts">
-  import { blobToDataURI, fileToBase64, resizeImage } from '@/utilities/files';
+  import { blobToDataURI, resizeImage } from '@/utilities/files';
 
   const url = ref('');
   const fullResponse = ref();
   const fullError = ref();
   const isLoading = ref(false);
   const fileInput: Ref<HTMLInputElement | null> = ref(null);
+  const previewSrc = ref();
+
+  const handleImageChange = (e: Event) => {
+    const input = e.target as HTMLInputElement;
+    const file = input.files?.[0]
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewSrc.value = e.target?.result as string;
+      }
+      reader.readAsDataURL(file);
+    }
+  }
 
   const handleSubmit = async (e: Event) => {
     const files = fileInput.value?.files;
@@ -20,8 +33,6 @@
     try {
       const resizedImageBlob = await resizeImage(file, 300, 200);
       const dataUri = await blobToDataURI(resizedImageBlob);
-      console.log('dataUri', dataUri)
-      // const base64File = await fileToBase64(file) as string;
       const res = await $fetch('/api/openai', {
         method: 'POST',
         body: {
@@ -48,14 +59,32 @@
 <template>
   <div>
     <form @submit.prevent="handleSubmit">
-      <input ref="fileInput" type="file" accept="image/*" name="image" />
-      <button :disabled="isLoading" type="submit">{{isLoading ? 'Please wait...' : 'Describe image'}}</button>
+      <input
+        ref="fileInput"
+        type="file"
+        accept="image/*"
+        name="image"
+        @change="handleImageChange"
+      />
+      <button
+        :disabled="isLoading"
+        type="submit"
+      >
+        {{ isLoading ? 'Please wait...' : 'Describe image' }}
+      </button>
     </form>
+
+    <img v-if="previewSrc" :src="previewSrc" width="200" />
 
     <sup>{{ fullResponse }}</sup>
     <sup>{{ fullError }}</sup>
     <div>
-      <a v-if="url" :href="url" target="_blank">See vehicles like this</a>
+      <a
+        v-if="url"
+        :href="url"
+        target="_blank">
+        See vehicles like this
+      </a>
     </div>
   </div>
 </template>
