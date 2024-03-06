@@ -64,6 +64,7 @@
         type="file"
         accept="image/*"
         name="image"
+        capture="environment"
         @change="handleImageChange"
       />
       <button
