@@ -111,7 +111,7 @@
 
     <div>
       <template v-if="willRedirect">
-        <div>Showing you {{ fullResponse?.data.make}} {{ fullResponse?.data.model }} for sale on {{ fullResponse?.data.website }} in {{ secondsUntilRedirect }}</div>
+        <div>Showing you {{ fullResponse?.data.make}} {{ fullResponse?.data.model }} for sale on {{ fullResponse?.data.website }}{{ secondsUntilRedirect > 0 ? ` in ${secondsUntilRedirect}` : '' }}</div>
         <button @click="cancelRedirect">Nonono stop that!</button>
       </template>
     </div>
