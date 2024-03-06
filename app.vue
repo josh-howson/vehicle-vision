@@ -119,7 +119,7 @@
     <img v-if="previewSrc" :src="previewSrc" width="200" />
 
     <!-- <sup>{{ fullResponse }}</sup> -->
-    <!-- <sup>{{ fullError }}</sup> -->
+    <sup>{{ fullError }}</sup>
   </div>
 </template>
 
