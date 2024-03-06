@@ -44,16 +44,24 @@ export const getOpenAIResponseWithImage = async (prompt: string, imageUrl: strin
 
 export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) => {
   if (content.status !== 'ok') return undefined;
-  const base = "https://www.rvtrader.com/rvs-for-sale";
+  const BASE_URL = {
+    rvtrader: "https://www.rvtrader.com",
+    cycletrader: "https://www.cycletrader.com",
+    carsales: "https://www.carsales.com.au,"
+  };
+  const base = BASE_URL[content.data.website];
+  if (!base) return undefined;
   const params = new URLSearchParams();
 
-  Object.entries(content.data).forEach(([key, value]) => {
-    if (value !== null && value !== undefined) {
-      params.append(key, value);
-    }
-  });
+  if (['rvtrader', 'cycletrader'].includes(content.data.website)) {
+    if (content.data.make) params.append('make', content.data.make);
+    if (content.data.model) params.append('model', content.data.model);
+    return `${base}?${params.toString()}`;
+  }
 
-  return `${base}?${params.toString()}`;
+  if (content.data.website === 'carsales') {
+    return [base, content.data.make, content.data.model].filter(i => !!i).join('/');
+  }
 }
 
 export const buildPrompt = () => {
