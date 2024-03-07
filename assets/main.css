@@ -73,7 +73,7 @@ body {
 #__nuxt {
   display: grid;
   align-content: start;
-  --max-content-width: 80rem;
+  --max-content-width: 110.7rem;
   --page-gutter: 2rem;
   grid-template-columns: minmax(var(--page-gutter), 1fr) minmax(0, var(--max-content-width)) minmax(var(--page-gutter), 1fr);
 }

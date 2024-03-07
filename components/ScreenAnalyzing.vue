@@ -60,7 +60,7 @@
   .preview {
     position: relative;
     margin: 0 8rem;
-    display: flex;
+    display: inline-flex;
     justify-content: center;
   }
 
