@@ -9,21 +9,36 @@
 
   type Emits = (e: 'click-start-over') => void;
   const emit = defineEmits<Emits>();
+
+  type Step = "preview" | "cards";
+  const step: Ref<Step> = ref('preview');
+
+  onMounted(() => {
+    setTimeout(() => {
+      if (step.value === 'preview') step.value = 'cards';
+    }, 5000)
+  })
 </script>
 
 <template>
   <div class="analyzing">
-    <div class="preview">
-      <div class="preview-ratio">
-        <img class="preview-image" :src="previewSrc">
+    <template v-if="step === 'preview'">
+      <div class="preview">
+        <div class="preview-ratio">
+          <img class="preview-image" :src="previewSrc">
+        </div>
+
+        <IconStar class="star-1" />
+        <IconStar class="star-2" />
+        <IconStar class="star-3" />
       </div>
 
-      <IconStar class="star-1" />
-      <IconStar class="star-2" />
-      <IconStar class="star-3" />
-    </div>
+      <p class="message">We’re analyzing your photo for things like make and model&hellip;</p>
+    </template>
 
-    <p class="message">We’re analyzing your photo for things like make and model&hellip;</p>
+    <template v-else-if="step === 'cards'">
+      <p>Next up: matching your photo specs with listings for sale. (Friendly reminder: AI isn’t perfect, but it’ll help speed up your buying process.)</p>
+    </template>
 
     <button class="text-button" @click="emit('click-start-over')">
       Start over

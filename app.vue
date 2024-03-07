@@ -58,40 +58,42 @@
     loading.value = true;
     step.value = 'analyzing';
 
-    const file = files[0];
+    setTimeout(async () => {
+      const file = files[0];
 
-    try {
-      const resizedImageBlob = await resizeImage(file, 300, 200);
+      try {
+        const resizedImageBlob = await resizeImage(file, 300, 200);
 
-      const dataUri = await blobToDataURI(resizedImageBlob);
+        const dataUri = await blobToDataURI(resizedImageBlob);
 
-      const res = await $fetch('/api/openai', {
-        method: 'POST',
-        body: {
-          imageUrl: dataUri,
-        },
-        headers: {
-          'Content-Type': 'application/json',
+        const res = await $fetch('/api/openai', {
+          method: 'POST',
+          body: {
+            imageUrl: dataUri,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }) as OpenAIVisionResponseContent;
+
+        if ('data' in res && res.data) {
+          fullResponse.value = res;
+          url.value = res.data.url;
+          if (res.status === 'ok' && res.data.url) {
+            sendToResults(res);
+          }
+        } else {
+          console.error('`data` property is missing from the response');
         }
-      }) as OpenAIVisionResponseContent;
 
-      if ('data' in res && res.data) {
-        fullResponse.value = res;
-        url.value = res.data.url;
-        if (res.status === 'ok' && res.data.url) {
-          sendToResults(res);
-        }
-      } else {
-        console.error('`data` property is missing from the response');
+        fullError.value = null;
+      } catch (error: any) {
+        console.error("Upload failed:", error);
+        fullError.value = error;
       }
-
-      fullError.value = null;
-    } catch (error: any) {
-      console.error("Upload failed:", error);
-      fullError.value = error;
-    }
-    isAnalyzingImage.value = false;
-    loading.value = false;
+      isAnalyzingImage.value = false;
+      loading.value = false;
+    }, 8000);
   }
 
   const updateImagePreview = () => {
