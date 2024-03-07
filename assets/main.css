@@ -26,6 +26,26 @@
   font-size: 62.5%;
 }
 
+@media (color-gamut: p3) {
+  :root {
+    --color-primary: color(display-p3 0.2132 0.2948 0.9479);
+    --color-on-primary: color(display-p3 1 1 1);
+    --color-secondary: color(display-p3 0.7529 0.9804 0.9882);
+    --color-accent: color(display-p3 0.4667 0.7647 0.6235);
+    --color-accent-variant: color(display-p3 0.4745 0.4706 0.9373);
+    --color-logo: color(display-p3 0.7145 0.7145 0.7145);
+    --color-surface: color(display-p3 1 1 1);
+    --color-on-surface: color(display-p3 0.1451 0.1451 0.149);
+    --color-surface-variant: color(display-p3 0.9512 0.9512 0.9512);
+    --color-on-surface-variant: color(display-p3 0.3426 0.3426 0.3514);
+    --color-surface-transparent: color(display-p3 0.1451 0.1451 0.149 / 0.75);
+    --color-on-surface-inverse: color(display-p3 1 1 1);
+    --color-border-low: color(display-p3 0.895 0.895 0.895);
+    --color-border: color(display-p3 0.5765 0.5843 0.5961);
+    --color-border-floating: color(display-p3 0 0 0 / 0.10);
+  }
+}
+
 html,
 body,
 #__nuxt {
