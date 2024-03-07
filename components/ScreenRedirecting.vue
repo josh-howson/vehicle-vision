@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import type { OpenAIVisionResponseContent } from '@/types/openai';
+import { prefixWithAnOrA } from '@/utilities/format';
 
   type Props = {
     fullResponse: OpenAIVisionResponseContent | null;
@@ -20,7 +21,7 @@
       </div>
     </div>
 
-    <h1 class="headline">This looks like an {{ fullResponse && [fullResponse.data.make, fullResponse.data.model].filter(i => !!i).join(' ') }}</h1>
+    <h1 class="headline">This looks like {{ prefixWithAnOrA(fullResponse ? [fullResponse.data.make, fullResponse.data.model].filter(i => !!i).join(' ') : '') }}.</h1>
 
     <p class="buckle-up">Buckle up! We’re taking you to {{ fullResponse?.data.website }} to see matching listings for sale.</p>
 
