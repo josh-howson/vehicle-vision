@@ -107,11 +107,6 @@ body {
 }
 
 .text-button {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 3.2rem;
   padding: 1.2rem 3.2rem;
   border-radius: 999rem;
   background-color: var(--color-surface);

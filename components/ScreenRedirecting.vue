@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import type { OpenAIVisionResponseContent } from '@/types/openai';
-import { prefixWithAnOrA } from '@/utilities/format';
-import { getWebsiteDisplayName } from '~/utilities/website';
+  import { prefixWithAnOrA } from '@/utilities/format';
+  import { getWebsiteDisplayName } from '~/utilities/website';
 
   type Props = {
     fullResponse: OpenAIVisionResponseContent | null;
@@ -28,13 +28,17 @@ import { getWebsiteDisplayName } from '~/utilities/website';
 
     <p v-if="typeof secondsUntilRedirect === 'number'" class="redirecting-in">{{secondsUntilRedirect > 0 ? `Redirecting in ${secondsUntilRedirect}` : "Redirecting..." }}</p>
 
-    <div class="text-button" @click="emit('click-start-over')">Start over</div>
+    <div class="restart">
+      <div class="incorrect">Not correct?</div>
+      <button class="text-button" @click="emit('click-start-over')">Start over</button>
+    </div>
   </div>
 </template>
 
 <style scoped>
   .redirecting {
     padding-top: calc(20vh - 10rem);
+    padding-top: calc(20dvh - 10rem);
     text-align: center;
   }
 
@@ -67,5 +71,17 @@ import { getWebsiteDisplayName } from '~/utilities/website';
     box-shadow: 0 2.4rem 3rem 0 rgba(0, 0, 0, 0.2);
     outline: .1rem solid var(--color-);
     outline-offset: -.1rem;
+  }
+
+  .restart {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: .8rem;
+    padding: 3.2rem 0;
+  }
+
+  .incorrect {
+    color: var(--color-on-surface);
   }
 </style>

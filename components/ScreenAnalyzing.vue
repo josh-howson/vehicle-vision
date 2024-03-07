@@ -44,7 +44,7 @@
       </div>
     </template>
 
-    <button class="text-button" @click="emit('click-start-over')">
+    <button class="text-button button-restart" @click="emit('click-start-over')">
       Start over
     </button>
   </div>
@@ -60,11 +60,15 @@
   .preview {
     position: relative;
     margin: 0 8rem;
+    display: flex;
+    justify-content: center;
   }
 
   .preview-ratio {
     aspect-ratio: 4 / 3;
-    width: 100%;
+    max-width: 100%;
+    max-height: 40vh;
+    max-height: 40dvh;
   }
 
   .preview-image {
@@ -124,6 +128,14 @@
     flex-flow: column nowrap;
     align-items: center;
     gap: 3.2rem;
+  }
+
+  .button-restart {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 3.2rem;
   }
 
   @keyframes spin {
