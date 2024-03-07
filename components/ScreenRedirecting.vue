@@ -24,7 +24,7 @@
 
     <p class="buckle-up">Buckle up! We’re taking you to {{ fullResponse?.data.website }} to see matching listings for sale.</p>
 
-    <p v-if="typeof secondsUntilRedirect === 'number'" class="redirecting-in">Redirecting in {{ secondsUntilRedirect }}</p>
+    <p v-if="typeof secondsUntilRedirect === 'number'" class="redirecting-in">{{secondsUntilRedirect > 0 ? `Redirecting in ${secondsUntilRedirect}` : "Redirecting..." }}</p>
 
     <div class="text-button" @click="emit('click-start-over')">Start over</div>
   </div>
