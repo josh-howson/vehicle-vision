@@ -3,6 +3,16 @@
   import { blobToDataURI, resizeImage } from '@/utilities/files';
   import type { OpenAIVisionResponseContent } from '@/types/openai';
 
+  useHead({
+    title: 'Snap Shop',
+    meta: [
+      { name: 'description', content: 'Search for vehicles for sale by simply taking a photo.' }
+    ],
+    htmlAttrs: {
+      lang: 'en',
+    }
+  })
+
   const loading = ref(false);
   const imageInput: Ref<HTMLInputElement | null> = ref(null);
   const url = ref('');

@@ -35,10 +35,12 @@
   <div class="upload">
     <button
       class="upload-button"
+      aria-label="Upload an image"
       @click="emit('click-upload')"
     >
       <IconPlus />
     </button>
+
     <h2>Upload a photo</h2>
   </div>
 </template>
