@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import type { OpenAIVisionResponseContent } from '@/types/openai';
 import { prefixWithAnOrA } from '@/utilities/format';
+import { getWebsiteDisplayName } from '~/utilities/website';
 
   type Props = {
     fullResponse: OpenAIVisionResponseContent | null;
@@ -23,7 +24,7 @@ import { prefixWithAnOrA } from '@/utilities/format';
 
     <h1 class="headline">This looks like {{ prefixWithAnOrA(fullResponse ? [fullResponse.data.make, fullResponse.data.model].filter(i => !!i).join(' ') : '') }}.</h1>
 
-    <p class="buckle-up">Buckle up! We’re taking you to {{ fullResponse?.data.website }} to see matching listings for sale.</p>
+    <p class="buckle-up">Buckle up! We’re taking you to {{ fullResponse?.data.website && getWebsiteDisplayName(fullResponse?.data.website) }} to see matching listings for sale.</p>
 
     <p v-if="typeof secondsUntilRedirect === 'number'" class="redirecting-in">{{secondsUntilRedirect > 0 ? `Redirecting in ${secondsUntilRedirect}` : "Redirecting..." }}</p>
 

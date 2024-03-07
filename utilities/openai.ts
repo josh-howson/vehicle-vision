@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { OpenAIVisionRequestBody, OpenAIVisionResponseContent } from '@/types/openai';
+import type { WebsiteId } from '~/types/website';
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 
@@ -68,7 +69,7 @@ export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) =>
 }
 
 export const buildPrompt = () => {
-  const vehicleTypes = {
+  const vehicleTypes: {[key: string]: WebsiteId} = {
     "RV/Trailer Home": "rvtrader",
     "Motorcycle": "cycletrader",
     "Car": "carsales",

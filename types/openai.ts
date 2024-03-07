@@ -1,3 +1,5 @@
+import type { WebsiteId } from "./website";
+
 type OpenAIContentText = {
   type: 'text';
   text: string;
@@ -28,7 +30,7 @@ export type OpenAIVisionResponseContent = {
   data: {
     make: string;
     model: string;
-    website: 'rvtrader' | 'cycletrader' | 'carsales';
+    website: WebsiteId;
     url: string;
   }
 }
