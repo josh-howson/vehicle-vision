@@ -125,6 +125,7 @@
     :preview-src="previewSrc"
     :full-response="fullResponse"
     :seconds-until-redirect="secondsUntilRedirect"
+    @click-start-over="startOver"
   />
 
   <input
