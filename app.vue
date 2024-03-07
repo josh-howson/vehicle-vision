@@ -124,13 +124,13 @@
     @click-upload="handleUploadButtonClick"
   />
 
-  <ScreenAnalyzing
+  <LazyScreenAnalyzing
     v-if="step === 'analyzing'"
     @click-start-over="startOver"
     :previewSrc="previewSrc"
   />
 
-  <ScreenRedirecting
+  <LazyScreenRedirecting
     v-if="step === 'redirecting'"
     :preview-src="previewSrc"
     :full-response="fullResponse"
