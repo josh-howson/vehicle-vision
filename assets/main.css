@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #364BF2;
+  --color-on-primary: #FFFFFF;
+  --color-secondary: #C0FAFC;
+  --color-accent: #77C39F;
+  --color-accent-variant: #7978EF;
+  --color-logo: #B6B6B6;
+  --color-surface: #FFFFFF;
+  --color-on-surface: #252526;
+  --color-surface-variant: #F3F3F3;
+  --color-on-surface-variant: #57575A;
+  --color-surface-transparent: rgba(37, 37, 38, .75);
+  --color-on-surface-inverse: #FFFFFF;
+  --color-border-low: #E4E4E4;
+  --color-border: #939598;
+  --color-border-floating: rgba(0, 0, 0, .1);
+
+  font-size: 62.5%;
+}
+
+html,
+body,
+#__nuxt {
+  height: 100%;
+}
+
+body {
+  font-size: 1.6rem;
+  background: var(--color-canvas);
+  font-family: "Noto Sans", sans-serif;
+  margin: 0;
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+}
+
+#__nuxt {
+  display: grid;
+  align-content: start;
+  --max-content-width: 80rem;
+  --page-gutter: 2rem;
+  grid-template-columns: minmax(var(--page-gutter), 1fr) minmax(0, var(--max-content-width)) minmax(var(--page-gutter), 1fr);
+}
+
+:where(#__nuxt > *) {
+  grid-column: 2;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  color: var(--color-on-surface);
+  line-height: normal;
+  margin: 0;
+}
+
+:where(h1) {
+  font-size: 2.4rem;
+}
+
+:where(p) {
+  line-height: normal;
+  margin: 0;
+}
+
+:where(svg) {
+  fill: currentColor;
+}
+
+:where(button) {
+  cursor: pointer;
+  padding: 0;
+}
+
+.text-button {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 3.2rem;
+  padding: 1.2rem 3.2rem;
+  border-radius: 999rem;
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  border: .1rem solid var(--color-border);
+  font-size: 1.6rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

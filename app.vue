@@ -1,37 +1,52 @@
 <script setup lang="ts">
+  import '@/assets/main.css';
   import { blobToDataURI, resizeImage } from '@/utilities/files';
-  import type { OpenAIVisionResponseContent } from './types/openai';
+  import type { OpenAIVisionResponseContent } from '@/types/openai';
 
+  const loading = ref(false);
+  const imageInput: Ref<HTMLInputElement | null> = ref(null);
   const url = ref('');
   const fullResponse: Ref<null | OpenAIVisionResponseContent> = ref(null);
   const fullError = ref();
   const isAnalyzingImage = ref(false);
+  const previewSrc = ref();
   const willRedirect = ref(false);
   const secondsUntilRedirect = ref(0);
-  const fileInput: Ref<HTMLInputElement | null> = ref(null);
-  const previewSrc = ref();
+
+  type Step = 'upload' | 'analyzing' | 'redirecting';
+  const step: Ref<Step> = ref('upload');
+
   let intervalId: ReturnType<typeof setInterval> | null = null; 
 
-  const updateImagePreview = () => {
-    const input = fileInput.value as HTMLInputElement;
-    const file = input.files?.[0]
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        previewSrc.value = e.target?.result as string;
-      }
-      reader.readAsDataURL(file);
-    }
+  const handleUploadButtonClick = () => {
+    if (imageInput.value) imageInput.value.click();
   }
 
-  const sendImageToOpenAI = async () => {
-    const files = fileInput.value?.files;
+  const sendToResults = (response: OpenAIVisionResponseContent) => {
+    step.value = 'redirecting';
+    willRedirect.value = true;
+    const redirectInThisManySeconds = 5;
+    secondsUntilRedirect.value = redirectInThisManySeconds;
+    intervalId = setInterval(() => {
+      if (secondsUntilRedirect.value > 0) {
+        secondsUntilRedirect.value = secondsUntilRedirect.value - 1
+      } else {
+        if (intervalId) clearInterval(intervalId);
+        window.location.href = response.data.url;
+      }
+    }, 1000);
+  }
+
+  const getImageAnalysis = async () => {
+    const files = imageInput.value?.files;
     if (!files || files.length === 0) {
       console.error('No file selected.')
       return;
     }
 
     isAnalyzingImage.value = true;
+    loading.value = true;
+    step.value = 'analyzing';
 
     const file = files[0];
 
@@ -66,64 +81,58 @@
       fullError.value = error;
     }
     isAnalyzingImage.value = false;
+    loading.value = false;
+  }
+
+  const updateImagePreview = () => {
+    const input = imageInput.value as HTMLInputElement;
+    const file = input.files?.[0]
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewSrc.value = e.target?.result as string;
+      }
+      reader.readAsDataURL(file);
+    }
   }
 
   const handleFileChange = () => {
-    sendImageToOpenAI();
+    getImageAnalysis();
     updateImagePreview();
   }
 
-  const sendToResults = (response: OpenAIVisionResponseContent) => {
-    willRedirect.value = true;
-    const redirectInThisManySeconds = 5;
-    secondsUntilRedirect.value = redirectInThisManySeconds;
-    intervalId = setInterval(() => {
-      if (secondsUntilRedirect.value > 0) {
-        secondsUntilRedirect.value = secondsUntilRedirect.value - 1
-      } else {
-        if (intervalId) clearInterval(intervalId);
-        window.location.href = response.data.url;
-      }
-    }, 1000);
-  }
-  
-  const cancelRedirect = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
-      willRedirect.value = false;
-    }
+  const startOver = () => {
+    window.location.reload();
   }
 </script>
 
 <template>
-  <div>
-    <input
-      ref="fileInput"
-      type="file"
-      accept="image/*"
-      name="image"
-      capture="environment"
-      @change="handleFileChange"
-    />
+  <Header :is-loading="loading" />
 
-    <div v-if="isAnalyzingImage">Analyzing image...</div>
+  <ScreenUpload
+    v-if="step === 'upload'"
+    @click-upload="handleUploadButtonClick"
+  />
 
-    <div>
-      <template v-if="willRedirect">
-        <div>Showing you {{ fullResponse?.data.make}} {{ fullResponse?.data.model }} for sale on {{ fullResponse?.data.website }}{{ secondsUntilRedirect > 0 ? ` in ${secondsUntilRedirect}` : '' }}</div>
-        <button @click="cancelRedirect">Nonono stop that!</button>
-      </template>
-    </div>
+  <ScreenAnalyzing
+    v-if="step === 'analyzing'"
+    @click-start-over="startOver"
+    :previewSrc="previewSrc"
+  />
 
-    <img v-if="previewSrc" :src="previewSrc" width="200" />
+  <ScreenRedirecting
+    v-if="step === 'redirecting'"
+    :preview-src="previewSrc"
+    :full-response="fullResponse"
+    :seconds-until-redirect="secondsUntilRedirect"
+  />
 
-    <!-- <sup>{{ fullResponse }}</sup> -->
-    <sup>{{ fullError }}</sup>
-  </div>
+  <input
+    style="display: none" ref="imageInput"
+    type="file"
+    accept="image/*"
+    name="image"
+    capture="environment"
+    @change="handleFileChange"
+  />
 </template>
-
-<style>
-  body {font-size: 20px;}
-  button, input[type="file"] {padding: 10px; font-size: inherit}
-</style>
