@@ -51,7 +51,7 @@
 
 <template>
   <header class="site-header">
-    <div class="logo">SnapShop</div>
+    <Logo class="logo" aria-label="SnapShop logo" />
   </header>
 
   <div
@@ -78,13 +78,9 @@
   }
 
   .logo {
-    font-size: 2.4rem;
     padding: 3.2rem;
-    color: var(--color-on-surface);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: .8rem;
+    color: var(--color-primary);
+    box-sizing: content-box;
   }
 
   .progress {
