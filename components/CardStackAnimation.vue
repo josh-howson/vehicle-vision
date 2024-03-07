@@ -139,12 +139,12 @@
     }
     50% {
       /* end */
-      transform: rotate(4deg) translate(32%, 5%);
+      transform: rotate(4deg) translate(32%, 4%);
       z-index: 1;
     }
     100% {
       /* stay at end */
-      transform: rotate(4deg) translate(32%, 5%);
+      transform: rotate(4deg) translate(32%, 4%);
       z-index: 0;
     }
   }
