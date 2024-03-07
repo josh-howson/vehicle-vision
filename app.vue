@@ -38,9 +38,10 @@
     const redirectInThisManySeconds = 5;
     secondsUntilRedirect.value = redirectInThisManySeconds;
     intervalId = setInterval(() => {
-      if (secondsUntilRedirect.value > 0) {
+      if (secondsUntilRedirect.value > 1) {
         secondsUntilRedirect.value = secondsUntilRedirect.value - 1
       } else {
+        secondsUntilRedirect.value = 0;
         if (intervalId) clearInterval(intervalId);
         window.location.href = response.data.url;
       }
