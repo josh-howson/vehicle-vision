@@ -37,7 +37,11 @@
     </template>
 
     <template v-else-if="step === 'cards'">
-      <p>Next up: matching your photo specs with listings for sale. (Friendly reminder: AI isn’t perfect, but it’ll help speed up your buying process.)</p>
+      <div class="cards-step">
+        <CardStackAnimation />
+
+        <p>Next up: matching your photo specs with listings for sale. (Friendly reminder: AI isn’t perfect, but it’ll help speed up your buying process.)</p>
+      </div>
     </template>
 
     <button class="text-button" @click="emit('click-start-over')">
@@ -113,6 +117,13 @@
 
   .message {
     margin-top: 6.4rem;
+  }
+
+  .cards-step {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 3.2rem;
   }
 
   @keyframes spin {
