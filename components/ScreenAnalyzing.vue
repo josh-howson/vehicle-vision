@@ -28,7 +28,7 @@
   <template v-else-if="step === 'cards'">
     <div class="cards-step">
       <div class="card-stack-wrap">
-        <SparkleStarsAnimation style="color: var(--color-secondary)" />
+        <SparkleStarsAnimation style="color: var(--color-secondary); scale: .8; z-index: -1;" />
         
         <CardStackAnimation />
       </div>

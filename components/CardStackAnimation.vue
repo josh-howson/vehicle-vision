@@ -90,18 +90,11 @@
 
 <style scoped>
   .stack-group {
-    aspect-ratio: 1 / 1;
-    width: 18rem;
     position: relative;
   }
 
   .stack-group svg {
     fill: none;
-  }
-
-  .stack {
-    width: 100%;
-    height: 100%;
   }
 
   .stack-group [class*="card-"] {
@@ -111,6 +104,7 @@
     top: 48.7%;
     left: 24.8%;
     z-index: -1;
+    --transform-end: rotate(4deg) translate(32.8%, 1.5%);
   }
 
   .card-bike {
@@ -139,22 +133,22 @@
     }
     25% {
       /* end */
-      transform: rotate(4deg) translate(32%, 4%);
+      transform: var(--transform-end);
       z-index: 100;
     }
     25.1% {
       /* sit on stack */
-      transform: rotate(4deg) translate(32%, 4%);
+      transform: var(--transform-end);
       z-index: 50;
     }
     50% {
       /* stay at end */
-      transform: rotate(4deg) translate(32%, 4%);
+      transform: var(--transform-end);
       z-index: 1;
     }
     50.1% {
       /* init 2 */
-      transform: rotate(4deg) translate(32%, 4%);
+      transform: var(--transform-end);
       z-index: -1;
     }
     62.5% {
@@ -169,17 +163,17 @@
     }
     75% {
       /* end 2 */
-      transform: rotate(4deg) translate(32%, 4%);
+      transform: var(--transform-end);
       z-index: 100;
     }
     75.1% {
       /* sit on stack */
-      transform: rotate(4deg) translate(32%, 4%);
+      transform: var(--transform-end);
       z-index: 50;
     }
     100% {
       /* stay at end 2 */
-      transform: rotate(4deg) translate(32%, 4%);
+      transform: var(--transform-end);
       z-index: 1;
     }
   }
