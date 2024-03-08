@@ -76,6 +76,7 @@ body {
   color: var(--color-on-surface);
   line-height: normal;
   margin: 0;
+  text-wrap: balance;
 }
 
 :where(h1) {
@@ -85,7 +86,9 @@ body {
 :where(p) {
   line-height: normal;
   margin: 0;
+  text-wrap: balance;
 }
+
 :where(p + p, :where(h1, h2, h3, h4, h5, h6) + p) {
   margin-top: 1em;
 }
