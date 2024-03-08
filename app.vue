@@ -4,7 +4,7 @@
   import type { OpenAIVisionResponseContent } from '@/types/openai';
 
   useHead({
-    title: 'Snap Shop',
+    title: 'Snap Shop - Search vehicles for sale by photo',
     meta: [
       { name: 'description', content: 'Search for vehicles for sale by simply taking a photo.' }
     ],
