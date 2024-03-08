@@ -28,9 +28,9 @@
     text-align: center;
     --bg-url: url('/wave-dots.png');
     background-image: linear-gradient(rgba(255, 255, 255, calc(1 - var(--bg-opacity))), rgba(255, 255, 255, calc(1 - var(--bg-opacity)))), var(--bg-url);
-    background-size: auto 60rem;
+    background-size: auto 50rem;
     background-repeat: no-repeat;
-    background-position: center 60vh;
+    background-position: center 62.5vh;
   }
   
   @media (min-width: 64rem) {
