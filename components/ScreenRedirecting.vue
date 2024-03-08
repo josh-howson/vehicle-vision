@@ -15,11 +15,9 @@
 </script>
 
 <template>
-  <div class="preview">
-    <div class="preview-ratio">
-      <img class="preview-image" :src="previewSrc">
-    </div>
-  </div>
+  <PreviewImage
+    :src="previewSrc"
+  />
 
   <h1 class="headline">This looks like {{ prefixWithAnOrA(fullResponse ? [fullResponse.data.make, fullResponse.data.model].filter(i => !!i).join(' ') : '') }}.</h1>
 
@@ -28,7 +26,8 @@
   <p v-if="typeof secondsUntilRedirect === 'number'" class="redirecting-in">{{secondsUntilRedirect > 0 ? `Redirecting in ${secondsUntilRedirect}` : "Redirecting..." }}</p>
 
   <div class="restart">
-    <div class="incorrect">Not correct?</div>
+    <p class="incorrect">Not correct?</p>
+
     <button class="button-secondary" @click="emit('click-start-over')">Start over</button>
   </div>
 </template>
@@ -40,29 +39,11 @@
 
   .redirecting-in {
     margin-top: 1.6rem;
+    color: var(--color-on-surface-variant)
   }
 
   .buckle-up {
     margin-top: 1.6rem;
-    color: var(--color-on-surface);;
-  }
-
-  .preview {
-    width: calc(100% - 16rem)
-  }
-
-  .preview-ratio {
-    aspect-ratio: 4 / 3;
-    width: 100%;
-  }
-
-  .preview-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    box-shadow: 0 2.4rem 3rem 0 rgba(0, 0, 0, 0.2);
-    outline: .1rem solid var(--color-);
-    outline-offset: -.1rem;
   }
 
   .restart {
@@ -71,9 +52,5 @@
     align-items: center;
     gap: .8rem;
     margin-top: 6.4rem;
-  }
-
-  .incorrect {
-    color: var(--color-on-surface);
   }
 </style>

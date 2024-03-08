@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import IconStar from '@/assets/svg/IconStar.vue';
   import IconError from '@/assets/svg/IconError.vue';
 
   type Props = {
@@ -17,11 +16,7 @@
       <img class="preview-image" :src="src" />
 
       <template v-if="stars">  
-        <IconStar class="star-1" />
-
-        <IconStar class="star-2" />
-
-        <IconStar class="star-3" />
+        <SparkleStarsAnimation style="color: var(--color-primary)" />
       </template>
 
       <div
@@ -35,18 +30,22 @@
 
 <style scoped>
   .preview {
+    --side-spacing: 16rem;
     position: relative;
-    width: calc(100% - 16rem);
+    width: calc(100% - var(--side-spacing));
     display: flex;
     justify-content: center;
     aspect-ratio: 4 / 3;
     isolation: isolate;
+    max-width: calc(48rem + var(--side-spacing));
+    max-height: calc(45rem + var(--side-spacing));
   }
 
   .preview-ratio {
     position: relative;
     width: 100%;
   }
+
   .preview-ratio::before {
     content: '';
     position: absolute;
@@ -68,44 +67,6 @@
     z-index: 1;
   }
 
-
-  [class*="star-"] {
-    color: var(--color-primary);
-    position: absolute;
-    --size: 16%;
-    width: var(--size);
-    height: var(--size);
-    animation: spin var(--duration, 3s) linear infinite var(--offset, 0s);
-    transform: rotate(0deg) scale(0);
-  }
-
-  .star-1 {
-    top: 25%;
-    left: -20%;
-    transform: rotate(-12deg);
-    --duration: 2.5s;
-    rotate: -12deg;
-  }
-
-  .star-2 {
-    top: 100%;
-    left: 65%;
-    transform: rotate(-10deg) scale(.5);
-    rotate: -10deg;
-    scale: .5;
-    --offset: -1s;
-    --duration: 3s
-  }
-
-  .star-3 {
-    top: 75%;
-    left: 102%;
-    rotate: 15deg;
-    scale: .75;
-    --offset: -.2s;
-    --duration: 2.8s
-  }
-
   .error-overlay {
     position: absolute;
     background: var(--color-surface-transparent);
@@ -115,7 +76,9 @@
     height: 100%;
     display: grid;
     place-items: center;
+    z-index: 1;
   }
+
   .error-overlay svg {
     width: 25%;
     height: 25%;

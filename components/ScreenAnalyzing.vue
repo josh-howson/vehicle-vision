@@ -6,7 +6,7 @@
 
   type Step = "preview" | "cards";
   const step: Ref<Step> = ref('preview');
-  const firstScreenDuration = 5000;
+  const firstScreenDuration = 5500;
 
   onMounted(() => {
     setTimeout(() => {
@@ -18,18 +18,27 @@
 <template>
   <template v-if="step === 'preview'">
     <PreviewImage
+      class="smooth-in-out"
+      style="--slide-up: 0%"
       :src="previewSrc"
       stars
     />
 
-    <p class="message">We’re analyzing your photo for things like make and model&hellip;</p>
+    <p class="message smooth-in-out">We’re analyzing your photo for things like make and model&hellip;</p>
   </template>
 
   <template v-else-if="step === 'cards'">
-    <div class="cards-step">
-      <CardStackAnimation />
+    <div
+      class="cards-step smooth-in"
+      style="--slide-up: 0%"
+    >
+      <div class="card-stack-wrap">
+        <SparkleStarsAnimation style="color: var(--color-secondary); scale: .8; z-index: -1;" />
+        
+        <CardStackAnimation />
+      </div>
 
-      <p>Next up: matching your photo specs with listings for sale. (Friendly reminder: AI isn’t perfect, but it’ll help speed up your buying process.)</p>
+      <p class="smooth-in">Next up: matching your photo specs with listings for sale. (Friendly reminder: AI isn’t perfect, but it’ll help speed up your buying process.)</p>
     </div>
   </template>
 </template>
@@ -44,6 +53,10 @@
     flex-flow: column nowrap;
     align-items: center;
     gap: 3.2rem;
+  }
+
+  .card-stack-wrap {
+    position: relative;
   }
 
   .button-restart {

@@ -5,17 +5,46 @@
   import IconCarsales from '@/assets/svg/IconCarsales.vue';
   import IconPlus from '@/assets/svg/IconPlus.vue';
 
-  type Emits = (e: 'click-upload', payload: 'file' | 'capture') => void;
+  type Emits = {
+    (e: 'click-upload', value: 'file' | 'capture'): void;
+    (e: 'file-drop', file: File): void;
+  }
   const emit = defineEmits<Emits>();
 
   const isDrawerOpen = ref(false);
+  const isDraggingOver = ref(false);
 
   const handleDrawerClose = () => {
     isDrawerOpen.value = false;
   }
+
   const handleOptionClick = (option: 'file' | 'capture') => {
     isDrawerOpen.value = false;
     emit('click-upload', option);
+  }
+
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+    isDraggingOver.value = true;
+  }
+  
+  const handleDragLeave = (e: DragEvent) => {
+    isDraggingOver.value = false;
+  };
+  const handleDrop = (e: DragEvent) => {
+    e.preventDefault();
+
+    if (e.dataTransfer && e.dataTransfer.items) {
+      for (let i = 0; i < e.dataTransfer.items.length; i++) {
+        if (e.dataTransfer.items[i].kind === 'file') {
+            const file: File | null = e.dataTransfer.items[i].getAsFile();
+            if (file) {
+              emit('file-drop', file);
+            }
+            break;
+          }
+      }
+    }
   }
 </script>
 
@@ -42,9 +71,14 @@
     </div>
   </div>
 
-  <div class="upload">
+  <div
+    :class="['upload', isDraggingOver && 'dragging-over']"
+    @dragover="handleDragOver"
+    @dragleave="handleDragLeave"
+    @drop="handleDrop"
+  >
     <button
-      class="upload-button button-primary icon-only"
+      class="upload-button-mobile button-primary icon-only"
       aria-label="Upload an image"
       @click="isDrawerOpen = true"
     >
@@ -52,6 +86,17 @@
     </button>
 
     <h2>Upload a photo</h2>
+
+    <p class="drag-n-drop-instructional">Drag and drop files here to upload, or use the upload button</p>
+
+    <button
+      class="upload-button-desktop button-primary"
+      aria-label="Upload an image"
+      @click="handleOptionClick('file')"
+    >
+      <IconPlus />
+      Upload
+    </button>
   </div>
 
   <UploadDrawer
@@ -113,9 +158,50 @@
     align-items: center;
     justify-content: center;
     gap: 1.6rem;
+    width: 100%;
   }
 
   .upload h2 {
     font-size: 2.4rem;
+  }
+
+  .drag-n-drop-instructional {
+    margin: 0;
+  }
+
+  @media (max-width: 63.99rem) {
+    .upload-button-desktop {
+      display: none;
+    }
+
+    .drag-n-drop-instructional {
+      display: none;
+    }
+  }
+  @media (min-width: 64rem) {
+    h1 {
+      font-size: 4rem;
+    }
+
+    .upload-button-mobile {
+      display: none;
+    }
+
+    .upload {
+      border: .1rem dashed var(--color-border);
+      margin: 3.2rem 0;
+      border-radius: .8rem;
+      background-color: var(--color-surface);
+    }
+
+    .upload.dragging-over {
+      border-color: currentColor;
+      background-color: var(--color-surface-variant);
+      color: var(--color-on-surface-variant);
+    }
+
+    .upload.dragging-over h2 {
+      color: inherit;
+    }
   }
 </style>
