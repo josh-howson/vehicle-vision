@@ -27,7 +27,11 @@
 
   <template v-else-if="step === 'cards'">
     <div class="cards-step">
-      <CardStackAnimation />
+      <div class="card-stack-wrap">
+        <SparkleStarsAnimation style="color: var(--color-secondary)" />
+        
+        <CardStackAnimation />
+      </div>
 
       <p class="smooth-in">Next up: matching your photo specs with listings for sale. (Friendly reminder: AI isn’t perfect, but it’ll help speed up your buying process.)</p>
     </div>
@@ -44,6 +48,10 @@
     flex-flow: column nowrap;
     align-items: center;
     gap: 3.2rem;
+  }
+
+  .card-stack-wrap {
+    position: relative;
   }
 
   .button-restart {
