@@ -5,18 +5,19 @@
   type Props = {
     previewSrc: string;
   }
-  const props = defineProps<Props>()
+  defineProps<Props>()
 
   type Emits = (e: 'click-start-over') => void;
   const emit = defineEmits<Emits>();
 
   type Step = "preview" | "cards";
   const step: Ref<Step> = ref('preview');
+  const firstScreenDuration = 5000;
 
   onMounted(() => {
     setTimeout(() => {
       if (step.value === 'preview') step.value = 'cards';
-    }, 5000)
+    }, firstScreenDuration)
   })
 </script>
 
@@ -26,11 +27,11 @@
       <div class="preview">
         <div class="preview-ratio">
           <img class="preview-image" :src="previewSrc">
+          <IconStar class="star-1" />
+          <IconStar class="star-2" />
+          <IconStar class="star-3" />
         </div>
 
-        <IconStar class="star-1" />
-        <IconStar class="star-2" />
-        <IconStar class="star-3" />
       </div>
 
       <p class="message">We’re analyzing your photo for things like make and model&hellip;</p>
@@ -52,7 +53,6 @@
 
 <style scoped>
   .analyzing {
-    text-align: center;
     padding-top: calc(30vh - 10rem);
     padding-top: calc(30dvh - 10rem);
   }
@@ -62,13 +62,15 @@
     margin: 0 8rem;
     display: flex;
     justify-content: center;
+    aspect-ratio: 4 / 3;
   }
 
   .preview-ratio {
-    aspect-ratio: 4 / 3;
+    position: relative;
     max-width: 100%;
     max-height: 40vh;
     max-height: 40dvh;
+    outline: .1rem solid var(--color-border-floating);
   }
 
   .preview-image {
@@ -77,7 +79,6 @@
     height: 100%;
     object-fit: cover;
     box-shadow: 0 2.4rem 3rem 0 rgba(0, 0, 0, 0.2);
-    outline: .1rem solid var(--color-);
     outline-offset: -.1rem;
     z-index: 1;
   }

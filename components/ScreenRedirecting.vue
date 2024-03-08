@@ -39,7 +39,6 @@
   .redirecting {
     padding-top: calc(20vh - 10rem);
     padding-top: calc(20dvh - 10rem);
-    text-align: center;
   }
 
   .headline {

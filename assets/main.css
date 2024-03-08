@@ -68,6 +68,7 @@ body {
   margin: 0;
   font-weight: 400;
   color: var(--color-on-surface-variant);
+  text-align: center;
 }
 
 #__nuxt {

@@ -73,7 +73,6 @@
   }
 
   .explainer {
-    text-align: center;
     margin-top: 1.6rem;
   }
 

@@ -70,9 +70,9 @@ export const getUrlFromOpenAIContent = (content: OpenAIVisionResponseContent) =>
 
 export const buildPrompt = () => {
   const vehicleTypes: {[key: string]: WebsiteId} = {
-    "RV/Trailer Home": "rvtrader",
-    "Motorcycle": "cycletrader",
-    "Car": "carsales",
+    "RV/Trailer home": "rvtrader",
+    "motorcycle": "cycletrader",
+    "car": "carsales",
   }
   const params = {
     make: 'make',
@@ -83,6 +83,9 @@ export const buildPrompt = () => {
   const responseFormat = `Approximate the following attributes: ${Object.keys(params).map(param => param).join(', ')}. Return each these as fields. If some but not all of these attributes are detected, return null for the unknown values. If none of these are detected throw an error.`;
   const noUnspecified = `Make guesses, no unspecified values. Guesses should never be "N/A" or any other indeterminate value.`;
   const errorCase = "If an error is thrown for any reason, return status of error with a readable error message as `statusText`.";
+  const undetectedErrorInstruction = "If a type of vehicle not specified in the mapping appears, please use `statusText` to, in one short sentence, inform them of the type of vehicle they photographed, and that this type of vehicle is not supported, and list the allowed vehicle types.";
+  const rightButVehicleBadImageError = "If the image appears to be one of the supported vehicle types, but you weren't able to lock down a make/model for it, use `statusText` give the user a couple brief pointers on how they could photograph the vehicle to better help you analyze it.";
+  const statusTextTone = "The tone of `statusText` should be slightly casual, polite, brief but not short, and never exceeding 3 sentences, and prioritize helping the user help you (only when status=error).";
 
   return [
     overview,
@@ -90,5 +93,8 @@ export const buildPrompt = () => {
     responseFormat,
     noUnspecified,
     errorCase,
+    undetectedErrorInstruction,
+    rightButVehicleBadImageError,
+    statusTextTone,
   ].join('\n');
 }

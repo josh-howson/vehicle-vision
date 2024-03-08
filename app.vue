@@ -17,8 +17,9 @@
   const imageInput: Ref<HTMLInputElement | null> = ref(null);
   const url = ref('');
   const fullResponse: Ref<null | OpenAIVisionResponseContent> = ref(null);
-  const fullError = ref();
   const isAnalyzingImage = ref(false);
+  const isError = ref(false);
+  const errorMessage = ref('');
   const previewSrc = ref();
   const willRedirect = ref(false);
   const secondsUntilRedirect = ref(0);
@@ -26,7 +27,13 @@
   type Step = 'upload' | 'analyzing' | 'redirecting';
   const step: Ref<Step> = ref('upload');
 
-  let intervalId: ReturnType<typeof setInterval> | null = null; 
+  let intervalId: ReturnType<typeof setInterval> | null = null;
+  
+  const handleError = (message: string) => {
+    isError.value = true;
+    errorMessage.value = message;
+    console.error('=== Error === ', message);
+  }
 
   const handleUploadButtonClick = () => {
     if (imageInput.value) imageInput.value.click();
@@ -48,17 +55,18 @@
     }, 1000);
   }
 
-  const getImageAnalysis = async () => {
+  const analyzeImage = async () => {
     const files = imageInput.value?.files;
     if (!files || files.length === 0) {
-      console.error('No file selected.')
+      handleError('No file selected.');
       return;
     }
 
     isAnalyzingImage.value = true;
-    loading.value = true;
     step.value = 'analyzing';
+    loading.value = true;
 
+    // setTimeout is a hack to make this take at least 8 seconds. api is too fast sometimes!
     setTimeout(async () => {
       const file = files[0];
 
@@ -82,15 +90,16 @@
           url.value = res.data.url;
           if (res.status === 'ok' && res.data.url) {
             sendToResults(res);
+          } else if (res.status === 'error') {
+            handleError(res.statusText);
+          } else {
+            handleError('An unknown error has ocurred. Please try again.');
           }
         } else {
-          console.error('`data` property is missing from the response');
+          handleError('Error: `data` property is missing from the response');
         }
-
-        fullError.value = null;
       } catch (error: any) {
-        console.error("Upload failed:", error);
-        fullError.value = error;
+        handleError(error);
       }
       isAnalyzingImage.value = false;
       loading.value = false;
@@ -110,7 +119,7 @@
   }
 
   const handleFileChange = () => {
-    getImageAnalysis();
+    analyzeImage();
     updateImagePreview();
   }
 
@@ -122,24 +131,34 @@
 <template>
   <Header :is-loading="loading" />
 
-  <ScreenUpload
-    v-if="step === 'upload'"
-    @click-upload="handleUploadButtonClick"
-  />
+  <template v-if="isError">
+    <LazyScreenError
+      :error-message="errorMessage"
+      :full-response="fullResponse"
+      @click-start-over="startOver"
+    />
+  </template>
 
-  <LazyScreenAnalyzing
-    v-if="step === 'analyzing'"
-    @click-start-over="startOver"
-    :previewSrc="previewSrc"
-  />
+  <template v-else>
+    <ScreenUpload
+      v-if="step === 'upload'"
+      @click-upload="handleUploadButtonClick"
+    />
 
-  <LazyScreenRedirecting
-    v-if="step === 'redirecting'"
-    :preview-src="previewSrc"
-    :full-response="fullResponse"
-    :seconds-until-redirect="secondsUntilRedirect"
-    @click-start-over="startOver"
-  />
+    <LazyScreenAnalyzing
+      v-if="step === 'analyzing'"
+      @click-start-over="startOver"
+      :previewSrc="previewSrc"
+    />
+
+    <LazyScreenRedirecting
+      v-if="step === 'redirecting'"
+      :preview-src="previewSrc"
+      :full-response="fullResponse"
+      :seconds-until-redirect="secondsUntilRedirect"
+      @click-start-over="startOver"
+    />
+  </template>
 
   <input
     style="display: none" ref="imageInput"

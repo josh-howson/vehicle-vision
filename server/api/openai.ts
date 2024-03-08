@@ -42,7 +42,6 @@ export default defineEventHandler(async event => {
       },
     } as VehicleVisionResponse;
   } catch(error: any) {
-    console.log(error)
     return new Response(error, { status: 500 });
   }
 });
