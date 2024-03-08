@@ -149,4 +149,5 @@ body {
 
 .button-transparent {
   background: transparent;
+  color: var(--color-on-surface);
 }
