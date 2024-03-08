@@ -26,17 +26,20 @@
     min-height: 100vh;
     min-height: 100dvh;
     text-align: center;
-    background-image: linear-gradient(rgba(255, 255, 255, calc(1 - var(--bg-opacity))), rgba(255, 255, 255, calc(1 - var(--bg-opacity)))), url('/wave-dots.png');
+    --bg-url: url('/wave-dots.png');
+    background-image: linear-gradient(rgba(255, 255, 255, calc(1 - var(--bg-opacity))), rgba(255, 255, 255, calc(1 - var(--bg-opacity)))), var(--bg-url);
     background-size: auto 60rem;
     background-repeat: no-repeat;
     background-position: center 60vh;
   }
-
+  
   @media (min-width: 64rem) {
     .layout {
-      --bg-opacity: .21;
-      background-size: cover;
+      --bg-url: url('/wave-dots-lg.png');
+      --bg-opacity: 1;
+      background-size: 100% auto;
       background-position: center 50vh;
+      background-image: 
     }
   }
   .main {
