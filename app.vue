@@ -59,21 +59,13 @@
     }, 1000);
   }
 
-  const analyzeImage = async () => {
-    const files = imageInput.value?.files;
-    if (!files || files.length === 0) {
-      handleError('No file selected.');
-      return;
-    }
-
+  const analyzeImage = async (file: File) => {
     isAnalyzingImage.value = true;
     step.value = 'analyzing';
     loading.value = true;
 
     // setTimeout is a hack to make this take at least 8 seconds. api is too fast sometimes!
     setTimeout(async () => {
-      const file = files[0];
-
       try {
         const resizedImageBlob = await resizeImage(file, 300, 200);
 
@@ -110,21 +102,22 @@
     }, 8000);
   }
 
-  const updateImagePreview = () => {
-    const input = imageInput.value as HTMLInputElement;
-    const file = input.files?.[0]
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        previewSrc.value = e.target?.result as string;
-      }
-      reader.readAsDataURL(file);
-    }
+  const handleFileDropped = (file: File) => {
+    console.log('file dropped')
+    handleFileChange(file);
   }
 
-  const handleFileChange = () => {
-    analyzeImage();
-    updateImagePreview();
+  const updateImagePreview = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewSrc.value = e.target?.result as string;
+    }
+    reader.readAsDataURL(file);
+  }
+
+  const handleFileChange = (file: File) => {
+    analyzeImage(file);
+    updateImagePreview(file);
   }
 
   const startOver = () => {
@@ -148,6 +141,7 @@
         <ScreenUpload
           v-if="step === 'upload'"
           @click-upload="handleUploadButtonClick"
+          @file-drop="handleFileDropped"
         />
 
         <LazyScreenAnalyzing
@@ -156,12 +150,12 @@
         />
 
         <LazyScreenRedirecting
-        v-if="step === 'redirecting'"
-        :preview-src="previewSrc"
-        :full-response="fullResponse"
-        :seconds-until-redirect="secondsUntilRedirect"
-        @click-start-over="startOver"
-      />
+          v-if="step === 'redirecting'"
+          :preview-src="previewSrc"
+          :full-response="fullResponse"
+          :seconds-until-redirect="secondsUntilRedirect"
+          @click-start-over="startOver"
+        />
       </template>
     </template>
 
@@ -185,6 +179,13 @@
     accept="image/*"
     name="image"
     :capture="fileOrCapture === 'capture' ? 'environment' : undefined"
-    @change="handleFileChange"
+    @change="e => {
+      const files = (e.target as HTMLInputElement)?.files;
+      if (files?.[0]) {
+        handleFileChange(files[0])
+      } else {
+        handleError('No file selected.');
+      }
+    }"
   />
 </template>

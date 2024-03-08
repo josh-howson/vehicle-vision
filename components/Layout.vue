@@ -39,7 +39,6 @@
       --bg-opacity: 1;
       background-size: 100% auto;
       background-position: center 50vh;
-      background-image: 
     }
   }
   .main {
@@ -51,6 +50,8 @@
     text-align: center;
     padding: 3.2rem 2rem;
     margin-top: 1.6rem;
+    max-width: 102.4rem;
+    margin: 0 auto;
   }
 
   .bottom {

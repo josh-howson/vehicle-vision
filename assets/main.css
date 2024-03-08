@@ -89,10 +89,6 @@ body {
   text-wrap: balance;
 }
 
-:where(p, h1, h2, h3, h4, h5, h6) {
-  text-shadow: 0 0 1rem #fff, 0 0 1rem #fff, 0 0 1rem #fff;
-}
-
 :where(p + p, :where(h1, h2, h3, h4, h5, h6) + p) {
   margin-top: 1em;
 }
