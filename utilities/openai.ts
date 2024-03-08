@@ -74,10 +74,12 @@ export const buildPrompt = () => {
     "motorcycle": "cycletrader",
     "car": "carsales",
   }
+
   const params = {
     make: 'make',
     model: 'model',
   };
+
   const overview = "Analyze the attached image and respond in JSON only. The response should be of shape: { status: 'ok' | 'error'; statusText: string; data: { ...the attributes defined in a moment } }";
   const expectedImage = `The attached image should be of a vehicle. If vehicle is detected, use the following mapping for the value of \`website\` where the key is vehicle type and the value is its corresponding website: ${JSON.stringify(vehicleTypes)}. If none of these vehicle types are detected throw an error.`;
   const responseFormat = `Approximate the following attributes: ${Object.keys(params).map(param => param).join(', ')}. Return each these as fields. If some but not all of these attributes are detected, return null for the unknown values. If none of these are detected throw an error.`;
