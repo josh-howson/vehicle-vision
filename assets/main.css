@@ -170,7 +170,7 @@ body {
 @keyframes smoothIn {
   from {
     opacity: 0;
-    transform: translateY(10%) scale(.95);
+    transform: translateY(var(--slide-up, 33%)) scale(.95);
   }
   to {
     opacity: 1;
@@ -181,7 +181,7 @@ body {
 @keyframes smoothInOut {
   0% {
     opacity: 0;
-    transform: translateY(10%) scale(.95);
+    transform: translateY(var(--slide-up, 33%)) scale(.95);
   }
   10% {
     opacity: 1;

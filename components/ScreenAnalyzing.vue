@@ -19,6 +19,7 @@
   <template v-if="step === 'preview'">
     <PreviewImage
       class="smooth-in-out"
+      style="--slide-up: 0%"
       :src="previewSrc"
       stars
     />
@@ -27,7 +28,10 @@
   </template>
 
   <template v-else-if="step === 'cards'">
-    <div class="cards-step smooth-in">
+    <div
+      class="cards-step smooth-in"
+      style="--slide-up: 0%"
+    >
       <div class="card-stack-wrap">
         <SparkleStarsAnimation style="color: var(--color-secondary); scale: .8; z-index: -1;" />
         
