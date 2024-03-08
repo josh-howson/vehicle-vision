@@ -76,7 +76,9 @@
     height: 100%;
     display: grid;
     place-items: center;
+    z-index: 1;
   }
+
   .error-overlay svg {
     width: 25%;
     height: 25%;
