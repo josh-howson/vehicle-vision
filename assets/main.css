@@ -89,6 +89,10 @@ body {
   text-wrap: balance;
 }
 
+:where(p, h1, h2, h3, h4, h5, h6) {
+  text-shadow: 0 0 1rem #fff, 0 0 1rem #fff, 0 0 1rem #fff;
+}
+
 :where(p + p, :where(h1, h2, h3, h4, h5, h6) + p) {
   margin-top: 1em;
 }
@@ -153,4 +157,42 @@ body {
 .button-transparent {
   background: transparent;
   color: var(--color-on-surface);
+}
+
+.smooth-in {
+  animation: smoothIn .5s forwards ease-out;
+}
+
+.smooth-in-out {
+  animation: smoothInOut 5s forwards ease-out;
+}
+
+@keyframes smoothIn {
+  from {
+    opacity: 0;
+    transform: translateY(33%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@keyframes smoothInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(33%);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(33%);
+  }
 }
