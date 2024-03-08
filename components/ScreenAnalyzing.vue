@@ -6,7 +6,7 @@
 
   type Step = "preview" | "cards";
   const step: Ref<Step> = ref('preview');
-  const firstScreenDuration = 6000;
+  const firstScreenDuration = 5500;
 
   onMounted(() => {
     setTimeout(() => {

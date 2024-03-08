@@ -170,29 +170,29 @@ body {
 @keyframes smoothIn {
   from {
     opacity: 0;
-    transform: translateY(33%);
+    transform: translateY(33%) scale(.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0%);
+    transform: translateY(0%) scale(1);
   }
 }
 
 @keyframes smoothInOut {
   0% {
     opacity: 0;
-    transform: translateY(33%);
+    transform: translateY(33%) scale(.95);
   }
   10% {
     opacity: 1;
-    transform: translateY(0%);
+    transform: translateY(0%) scale(1);
   }
   90% {
     opacity: 1;
-    transform: translateY(0%);
+    transform: translateY(0%) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translateY(33%);
+    transform: translateY(33%) scale(.95);
   }
 }
