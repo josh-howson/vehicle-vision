@@ -105,11 +105,12 @@
   }
 
   .stack-group [class*="card-"] {
-    --duration: 2.5s;
+    --duration: 4.5s;
     position: absolute;
     animation: shuffle var(--duration) ease infinite;
     top: 48.7%;
     left: 24.8%;
+    z-index: -1;
   }
 
   .card-bike {
@@ -126,25 +127,60 @@
       transform: rotate(-8.14deg) translate(0%, 0%);
       z-index: -1;
     }
-    25% {
+    12.5% {
       /* outer point */
-      transform: rotate(-18deg) translate(0%, -120%);
+      transform: rotate(-25deg) translate(0%, -125%);
       z-index: -1;
     }
-    25.1% {
+    12.6% {
       /* switch z-index */
-      transform: rotate(-18deg) translate(0%, -120%);
-      z-index: 1;
+      transform: rotate(-25deg) translate(0%, -125%);
+      z-index: 200;
     }
-    50% {
+    25% {
       /* end */
       transform: rotate(4deg) translate(32%, 4%);
-      z-index: 1;
+      z-index: 100;
     }
-    100% {
+    25.1% {
+      /* sit on stack */
+      transform: rotate(4deg) translate(32%, 4%);
+      z-index: 50;
+    }
+    50% {
       /* stay at end */
       transform: rotate(4deg) translate(32%, 4%);
-      z-index: 0;
+      z-index: 1;
+    }
+    50.1% {
+      /* init 2 */
+      transform: rotate(4deg) translate(32%, 4%);
+      z-index: -1;
+    }
+    62.5% {
+      /* outer point 2 */
+      transform: rotate(25deg) translate(52%, -130%);
+      z-index: -1;
+    }
+    62.6% {
+      /* switch z-index 2 */
+      transform: rotate(25deg) translate(52%, -130%);
+      z-index: 200;
+    }
+    75% {
+      /* end 2 */
+      transform: rotate(4deg) translate(32%, 4%);
+      z-index: 100;
+    }
+    75.1% {
+      /* sit on stack */
+      transform: rotate(4deg) translate(32%, 4%);
+      z-index: 50;
+    }
+    100% {
+      /* stay at end 2 */
+      transform: rotate(4deg) translate(32%, 4%);
+      z-index: 1;
     }
   }
 </style>

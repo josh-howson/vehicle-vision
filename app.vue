@@ -26,7 +26,7 @@
   const fileOrCapture: Ref<'file' | 'capture'> = ref('file')
 
   type Step = 'upload' | 'analyzing' | 'redirecting';
-  const step: Ref<Step> = ref('analyzing');
+  const step: Ref<Step> = ref('upload');
 
   let intervalId: ReturnType<typeof setInterval> | null = null;
   
