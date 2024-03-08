@@ -38,9 +38,9 @@
 
   const handleUploadButtonClick = (payload: 'file' | 'capture') => {
     fileOrCapture.value = payload;
-    nextTick(() => {
+    setTimeout(() => {
       if (imageInput.value) imageInput.value.click();
-    })
+    }, 50);
   }
 
   const sendToResults = (response: OpenAIVisionResponseContent) => {
