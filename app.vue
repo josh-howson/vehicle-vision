@@ -133,39 +133,54 @@
 </script>
 
 <template>
-  <Header :is-loading="loading" />
+  <Layout :is-loading="loading">
+    <template v-slot:main>
+      <template v-if="isError">
+        <LazyScreenError
+          :error-message="errorMessage"
+          :full-response="fullResponse"
+          :preview-src="previewSrc"
+          @click-start-over="startOver"
+        />
+      </template>
 
-  <template v-if="isError">
-    <LazyScreenError
-      :error-message="errorMessage"
-      :full-response="fullResponse"
-      @click-start-over="startOver"
-    />
-  </template>
+      <template v-else>
+        <ScreenUpload
+          v-if="step === 'upload'"
+          @click-upload="handleUploadButtonClick"
+        />
 
-  <template v-else>
-    <ScreenUpload
-      v-if="step === 'upload'"
-      @click-upload="handleUploadButtonClick"
-    />
+        <LazyScreenAnalyzing
+          v-if="step === 'analyzing'"
+          :previewSrc="previewSrc"
+        />
 
-    <LazyScreenAnalyzing
-      v-if="step === 'analyzing'"
-      @click-start-over="startOver"
-      :previewSrc="previewSrc"
-    />
+        <LazyScreenRedirecting
+        v-if="step === 'redirecting'"
+        :preview-src="previewSrc"
+        :full-response="fullResponse"
+        :seconds-until-redirect="secondsUntilRedirect"
+        @click-start-over="startOver"
+      />
+      </template>
+    </template>
 
-    <LazyScreenRedirecting
-      v-if="step === 'redirecting'"
-      :preview-src="previewSrc"
-      :full-response="fullResponse"
-      :seconds-until-redirect="secondsUntilRedirect"
-      @click-start-over="startOver"
-    />
-  </template>
+    <template
+      v-slot:bottom
+      v-if="step === 'analyzing' && !isError"
+    >
+      <button
+        class="button-secondary"
+        @click="startOver"
+      >
+        Start over
+      </button>
+    </template>
+  </Layout>
 
   <input
-    style="display: none" ref="imageInput"
+    style="display: none;"
+    ref="imageInput"
     type="file"
     accept="image/*"
     name="image"

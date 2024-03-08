@@ -17,7 +17,7 @@
 
 :root {
   --color-primary: #364BF2;
-  --color-primary-hover: #0028C4;
+  --color-primary-dark: #0028C4;
   --color-on-primary: #FFFFFF;
   --color-secondary: #C0FAFC;
   --color-accent: #77C39F;
@@ -33,15 +33,16 @@
   --color-border: #939598;
   --color-border-high: #252526;
   --color-border-floating: rgba(0, 0, 0, .1);
-
-
+  --color-on-surface-inverse: #FFF;
+  
+  
   font-size: 62.5%;
 }
 
 @media (color-gamut: p3) {
   :root {
     --color-primary: color(display-p3 0.2132 0.2948 0.9479);
-    --color-primary-hover: color(display-p3 0.0471 0.1529 0.7373);
+    --color-primary-dark: color(display-p3 0.0471 0.1529 0.7373);
     --color-on-primary: color(display-p3 1 1 1);
     --color-secondary: color(display-p3 0.7529 0.9804 0.9882);
     --color-accent: color(display-p3 0.4667 0.7647 0.6235);
@@ -57,14 +58,10 @@
     --color-border: color(display-p3 0.5765 0.5843 0.5961);
     --color-border-high: color(display-p3 0.1451 0.1451 0.149);
     --color-border-floating: color(display-p3 0 0 0 / 0.10);
+    --color-on-surface-inverse: color(display-p3 1 1 1);
   }
 }
 
-html,
-body,
-#__nuxt {
-  height: 100%;
-}
 
 body {
   font-size: 1.6rem;
@@ -72,20 +69,7 @@ body {
   font-family: "Noto Sans", sans-serif;
   margin: 0;
   font-weight: 400;
-  color: var(--color-on-surface-variant);
-  text-align: center;
-}
-
-#__nuxt {
-  display: grid;
-  align-content: start;
-  --max-content-width: 110.7rem;
-  --page-gutter: 2rem;
-  grid-template-columns: minmax(var(--page-gutter), 1fr) minmax(0, var(--max-content-width)) minmax(var(--page-gutter), 1fr);
-}
-
-:where(#__nuxt > *) {
-  grid-column: 2;
+  color: var(--color-on-surface);
 }
 
 :where(h1, h2, h3, h4, h5, h6) {
@@ -101,6 +85,9 @@ body {
 :where(p) {
   line-height: normal;
   margin: 0;
+}
+:where(p + p, :where(h1, h2, h3, h4, h5, h6) + p) {
+  margin-top: 1em;
 }
 
 :where(svg) {
@@ -119,9 +106,12 @@ body {
   font-size: 1.6rem;
   font-weight: 600;
   display: inline-flex;
+  gap: .8rem;
   align-items: center;
   justify-content: center;
-  transition: all .15s ease;
+  transition: .15s ease-out;
+  line-height: 1.5;
+  transition-property: border, background-color;
 }
 
 [class*="button-"].icon-only {
@@ -129,10 +119,16 @@ body {
   height: 5.6rem;
   width: 5.6rem;
   padding: 1.6rem;
+  --icon-size: 3.2rem;
+}
+
+[class*="button-"] svg {
+  height: var(--icon-size, 2rem);
+  width: var(--icon-size, 2rem);
 }
 
 .button-primary:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--color-primary-dark);
 }
 
 .button-primary {
@@ -149,4 +145,8 @@ body {
 
 .button-secondary:hover {
   border-color: var(--color-border-high);
+}
+
+.button-transparent {
+  background: transparent;
 }

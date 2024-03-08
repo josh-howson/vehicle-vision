@@ -7,6 +7,16 @@
 
   type Emits = (e: 'click-upload', payload: 'file' | 'capture') => void;
   const emit = defineEmits<Emits>();
+
+  const isDrawerOpen = ref(false);
+
+  const handleDrawerClose = () => {
+    isDrawerOpen.value = false;
+  }
+  const handleOptionClick = (option: 'file' | 'capture') => {
+    isDrawerOpen.value = false;
+    emit('click-upload', option);
+  }
 </script>
 
 <template>
@@ -36,21 +46,19 @@
     <button
       class="upload-button button-primary icon-only"
       aria-label="Upload an image"
-      @click="emit('click-upload', 'file')"
-    >
-      <IconPlus />
-    </button>
-
-    <button
-      class="upload-button button-primary icon-only"
-      aria-label="Upload an image"
-      @click="emit('click-upload', 'capture')"
+      @click="isDrawerOpen = true"
     >
       <IconPlus />
     </button>
 
     <h2>Upload a photo</h2>
   </div>
+
+  <UploadDrawer
+    :is-open="isDrawerOpen"
+    @request-close="handleDrawerClose"
+    @click-option="handleOptionClick"
+  />
 </template>
 
 <style scoped>
@@ -60,8 +68,8 @@
     align-items: center;
     gap: .4rem;
     font-size: 1.2rem;
-    margin-top: 3.2rem;
-    color: var(--color-on-surface)
+    color: var(--color-on-surface);
+    margin-bottom: 1.6rem;
   }
 
   .cart-icon {
@@ -80,14 +88,6 @@
     color: var(--color-primary)
   }
 
-  .explainer {
-    margin-top: 1.6rem;
-  }
-
-  .explainer p {
-    margin-top: 1.6rem;
-  }
-
   .brands {
     display: flex;
     flex-flow: row wrap;
@@ -104,21 +104,15 @@
   }
 
   .upload {
+    flex: 1;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    justify-content: center;
     gap: 1.6rem;
-    padding: calc(50vh - 25rem) 0;
-    padding: calc(50dvh - 25rem) 0;
-    height: 100%;
   }
 
   .upload h2 {
     font-size: 2.4rem;
-  }
-
-  .upload-button svg {
-    width: 100%;
-    height: 100%;
   }
 </style>

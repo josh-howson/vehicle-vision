@@ -79,7 +79,7 @@
 
   .logo {
     padding: 3.2rem;
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
     box-sizing: content-box;
   }
 

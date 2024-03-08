@@ -15,32 +15,25 @@
 </script>
 
 <template>
-  <div class="redirecting">
-    <div class="preview">
-      <div class="preview-ratio">
-        <img class="preview-image" :src="previewSrc">
-      </div>
+  <div class="preview">
+    <div class="preview-ratio">
+      <img class="preview-image" :src="previewSrc">
     </div>
+  </div>
 
-    <h1 class="headline">This looks like {{ prefixWithAnOrA(fullResponse ? [fullResponse.data.make, fullResponse.data.model].filter(i => !!i).join(' ') : '') }}.</h1>
+  <h1 class="headline">This looks like {{ prefixWithAnOrA(fullResponse ? [fullResponse.data.make, fullResponse.data.model].filter(i => !!i).join(' ') : '') }}.</h1>
 
-    <p class="buckle-up">Buckle up! We’re taking you to {{ fullResponse?.data.website && getWebsiteDisplayName(fullResponse?.data.website) }} to see matching listings for sale.</p>
+  <p class="buckle-up">Buckle up! We’re taking you to {{ fullResponse?.data.website && getWebsiteDisplayName(fullResponse?.data.website) }} to see matching listings for sale.</p>
 
-    <p v-if="typeof secondsUntilRedirect === 'number'" class="redirecting-in">{{secondsUntilRedirect > 0 ? `Redirecting in ${secondsUntilRedirect}` : "Redirecting..." }}</p>
+  <p v-if="typeof secondsUntilRedirect === 'number'" class="redirecting-in">{{secondsUntilRedirect > 0 ? `Redirecting in ${secondsUntilRedirect}` : "Redirecting..." }}</p>
 
-    <div class="restart">
-      <div class="incorrect">Not correct?</div>
-      <button class="button-secondary" @click="emit('click-start-over')">Start over</button>
-    </div>
+  <div class="restart">
+    <div class="incorrect">Not correct?</div>
+    <button class="button-secondary" @click="emit('click-start-over')">Start over</button>
   </div>
 </template>
 
 <style scoped>
-  .redirecting {
-    padding-top: calc(20vh - 10rem);
-    padding-top: calc(20dvh - 10rem);
-  }
-
   .headline {
     margin-top: 6.4rem;
   }
@@ -55,7 +48,7 @@
   }
 
   .preview {
-    margin: 0 8rem;
+    width: calc(100% - 16rem)
   }
 
   .preview-ratio {
@@ -77,7 +70,7 @@
     flex-flow: column nowrap;
     align-items: center;
     gap: .8rem;
-    padding: 3.2rem 0;
+    margin-top: 6.4rem;
   }
 
   .incorrect {
