@@ -30,12 +30,15 @@
 
 <style scoped>
   .preview {
+    --side-spacing: 16rem;
     position: relative;
-    width: calc(100% - 16rem);
+    width: calc(100% - var(--side-spacing));
     display: flex;
     justify-content: center;
     aspect-ratio: 4 / 3;
     isolation: isolate;
+    max-width: calc(48rem + var(--side-spacing));
+    max-height: calc(45rem + var(--side-spacing));
   }
 
   .preview-ratio {
