@@ -31,7 +31,7 @@
   <div class="explainer">
     <h1>What are you shopping for?</h1>
 
-    <p>Take a picture of an RV, motorcycle, or car you’re interested in, and we’ll find matching listings for sale just for you.</p>
+    <p class="explainer-para">Take a picture of an RV, motorcycle, or car you’re interested in, and we’ll find matching listings for sale just for you.</p>
 
     <div class="brands">
       <IconRVTrader />
@@ -70,6 +70,9 @@
     font-size: 1.2rem;
     color: var(--color-on-surface);
     margin-bottom: 1.6rem;
+  }
+  .explainer-para {
+    color: var(--color-on-surface-variant)
   }
 
   .cart-icon {
