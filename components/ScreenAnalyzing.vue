@@ -45,7 +45,7 @@
       </div>
     </template>
 
-    <button class="text-button button-restart" @click="emit('click-start-over')">
+    <button class="button-secondary button-restart" @click="emit('click-start-over')">
       Start over
     </button>
   </div>
@@ -83,7 +83,7 @@
     z-index: 1;
   }
 
-  [class^="star-"] {
+  [class*="star-"] {
     color: var(--color-primary);
     position: absolute;
     --size: 16%;

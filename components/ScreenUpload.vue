@@ -5,7 +5,7 @@
   import IconCarsales from '@/assets/svg/IconCarsales.vue';
   import IconPlus from '@/assets/svg/IconPlus.vue';
 
-  type Emits = (e: 'click-upload') => void;
+  type Emits = (e: 'click-upload', payload: 'file' | 'capture') => void;
   const emit = defineEmits<Emits>();
 </script>
 
@@ -34,9 +34,17 @@
 
   <div class="upload">
     <button
-      class="upload-button"
+      class="upload-button button-primary icon-only"
       aria-label="Upload an image"
-      @click="emit('click-upload')"
+      @click="emit('click-upload', 'file')"
+    >
+      <IconPlus />
+    </button>
+
+    <button
+      class="upload-button button-primary icon-only"
+      aria-label="Upload an image"
+      @click="emit('click-upload', 'capture')"
     >
       <IconPlus />
     </button>
@@ -107,20 +115,6 @@
 
   .upload h2 {
     font-size: 2.4rem;
-  }
-
-  .upload-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 5.6rem;
-    width: 5.6rem;
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
-    border: 0;
-    border-radius: 999rem;
-    padding: 1.6rem;
-    box-shadow: 0 .4rem 1.3rem 0 rgba(0, 40, 196, .25);
   }
 
   .upload-button svg {

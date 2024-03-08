@@ -30,7 +30,7 @@
 
     <div class="restart">
       <div class="incorrect">Not correct?</div>
-      <button class="text-button" @click="emit('click-start-over')">Start over</button>
+      <button class="button-secondary" @click="emit('click-start-over')">Start over</button>
     </div>
   </div>
 </template>

@@ -105,7 +105,7 @@
     height: 100%;
   }
 
-  .stack-group [class^="card-"] {
+  .stack-group [class*="card-"] {
     --duration: 2.5s;
     position: absolute;
     animation: shuffle var(--duration) ease infinite;

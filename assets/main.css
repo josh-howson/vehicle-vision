@@ -17,6 +17,7 @@
 
 :root {
   --color-primary: #364BF2;
+  --color-primary-hover: #0028C4;
   --color-on-primary: #FFFFFF;
   --color-secondary: #C0FAFC;
   --color-accent: #77C39F;
@@ -30,7 +31,9 @@
   --color-on-surface-inverse: #FFFFFF;
   --color-border-low: #E4E4E4;
   --color-border: #939598;
+  --color-border-high: #252526;
   --color-border-floating: rgba(0, 0, 0, .1);
+
 
   font-size: 62.5%;
 }
@@ -38,6 +41,7 @@
 @media (color-gamut: p3) {
   :root {
     --color-primary: color(display-p3 0.2132 0.2948 0.9479);
+    --color-primary-hover: color(display-p3 0.0471 0.1529 0.7373);
     --color-on-primary: color(display-p3 1 1 1);
     --color-secondary: color(display-p3 0.7529 0.9804 0.9882);
     --color-accent: color(display-p3 0.4667 0.7647 0.6235);
@@ -51,6 +55,7 @@
     --color-on-surface-inverse: color(display-p3 1 1 1);
     --color-border-low: color(display-p3 0.895 0.895 0.895);
     --color-border: color(display-p3 0.5765 0.5843 0.5961);
+    --color-border-high: color(display-p3 0.1451 0.1451 0.149);
     --color-border-floating: color(display-p3 0 0 0 / 0.10);
   }
 }
@@ -107,15 +112,41 @@ body {
   padding: 0;
 }
 
-.text-button {
+[class*="button-"] {
+  border: 0;
   padding: 1.2rem 3.2rem;
   border-radius: 999rem;
-  background-color: var(--color-surface);
-  color: var(--color-on-surface);
-  border: .1rem solid var(--color-border);
   font-size: 1.6rem;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: all .15s ease;
+}
+
+[class*="button-"].icon-only {
+  padding: 0;
+  height: 5.6rem;
+  width: 5.6rem;
+  padding: 1.6rem;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: 0 .4rem 1.3rem 0 rgba(0, 40, 196, .25);
+}
+
+.button-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  border: .1rem solid var(--color-border);
+}
+
+.button-secondary:hover {
+  border-color: var(--color-border-high);
 }

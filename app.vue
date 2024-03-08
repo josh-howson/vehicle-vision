@@ -23,6 +23,7 @@
   const previewSrc = ref();
   const willRedirect = ref(false);
   const secondsUntilRedirect = ref(0);
+  const fileOrCapture: Ref<'file' | 'capture'> = ref('file')
 
   type Step = 'upload' | 'analyzing' | 'redirecting';
   const step: Ref<Step> = ref('upload');
@@ -35,8 +36,11 @@
     console.error('=== Error === ', message);
   }
 
-  const handleUploadButtonClick = () => {
-    if (imageInput.value) imageInput.value.click();
+  const handleUploadButtonClick = (payload: 'file' | 'capture') => {
+    fileOrCapture.value = payload;
+    nextTick(() => {
+      if (imageInput.value) imageInput.value.click();
+    })
   }
 
   const sendToResults = (response: OpenAIVisionResponseContent) => {
@@ -165,7 +169,7 @@
     type="file"
     accept="image/*"
     name="image"
-    capture="environment"
+    :capture="fileOrCapture === 'capture' ? 'environment' : undefined"
     @change="handleFileChange"
   />
 </template>

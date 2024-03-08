@@ -14,7 +14,7 @@
       {{ errorMessage }}
     </div>
     <button
-      class="text-button"
+      class="button-secondary"
       @click="emit('click-start-over')"
     >
       Start over
