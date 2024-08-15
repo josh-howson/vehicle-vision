@@ -18,7 +18,7 @@ export const getOpenAIResponseWithImage = async (prompt: string, imageUrl: strin
   };
 
   const payload: OpenAIVisionRequestBody = {
-    model: 'gpt-4-vision-preview',
+    model: 'gpt-4o-mini',
     messages: [
       {
         role: "user",
